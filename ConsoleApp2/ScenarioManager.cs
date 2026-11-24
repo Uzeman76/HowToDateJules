@@ -387,7 +387,19 @@ public static class ScenarioManager
             int affectionDepart = player.Affection;
             var choixHistorique = new List<ChoiceRecord>();
             string currentId = "1";
-            if (!scenarioData.Situations.ContainsKey(currentId))
+
+            // Si le joueur a une sauvegarde au milieu de ce scénario, reprendre à cet endroit précis
+            if (!string.IsNullOrWhiteSpace(player.CurrentSituationId) && scenarioData.Situations.ContainsKey(player.CurrentSituationId))
+            {
+                currentId = player.CurrentSituationId;
+                if (currentId != "1")
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Typewriter.WriteLine($"\n[✓] Reprise automatique de votre partie : {scenarioData.DateTitle} (Scène {currentId}) !\n", delayMs: 10);
+                    Console.ResetColor();
+                }
+            }
+            else if (!scenarioData.Situations.ContainsKey(currentId))
             {
                 currentId = scenarioData.Situations.Keys.First();
             }
@@ -404,6 +416,12 @@ public static class ScenarioManager
                     Console.ResetColor();
                     break;
                 }
+
+                // Sauvegarder immédiatement la progression sur la scène courante
+                player.CurrentScenario = Path.GetFileName(path);
+                player.CurrentSituationId = currentId;
+                player.CurrentDateTitle = scenarioData.DateTitle;
+                SaveManager.Save(player);
 
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Magenta;
@@ -439,6 +457,9 @@ public static class ScenarioManager
                     {
                         prochainFichier = situation.NextScenarioFile;
                     }
+
+                    player.CurrentSituationId = currentId;
+                    SaveManager.Save(player);
                     break;
                 }
 
@@ -516,13 +537,13 @@ public static class ScenarioManager
             // AFFICHER LE RÉCAPITULATIF DU DATE
             AfficherRecapitulatifDate(player, scenarioData.DateTitle, choixHistorique, affectionDepart);
 
-            // Mettre à jour et sauvegarder l'état du joueur
-            player.CurrentScenario = prochainFichier ?? string.Empty;
-            SaveManager.Save(player);
-
             // Passage au date suivant ou fin
             if (!string.IsNullOrWhiteSpace(prochainFichier))
             {
+                player.CurrentScenario = prochainFichier;
+                player.CurrentSituationId = "1"; // Le prochain lieu commence à la scène 1
+                SaveManager.Save(player);
+
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Typewriter.WriteLine("Appuyez sur n'importe quelle touche pour passer au prochain lieu...\n", delayMs: 15);
                 Console.ResetColor();
@@ -534,7 +555,10 @@ public static class ScenarioManager
             }
             else
             {
-                // Plus d'autres dates dans la liste
+                // Plus d'autres dates : toute l'aventure est terminée !
+                player.EstJeuTermine = true;
+                player.CurrentSituationId = currentId;
+                SaveManager.Save(player);
                 scenarioCourant = null;
             }
         }

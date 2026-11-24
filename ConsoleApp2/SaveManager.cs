@@ -34,6 +34,9 @@ public static class SaveManager
             $"Sexe: {player.Gender}",
             $"Affection: {player.Affection}",
             $"Scenario: {player.CurrentScenario}",
+            $"SituationId: {player.CurrentSituationId}",
+            $"TitreLieu: {player.CurrentDateTitle}",
+            $"JeuTermine: {player.EstJeuTermine}",
             $"Date: {player.SaveDate:yyyy-MM-dd HH:mm:ss}"
         ];
 
@@ -77,6 +80,15 @@ public static class SaveManager
                         break;
                     case "scenario":
                         if (!string.IsNullOrWhiteSpace(value)) player.CurrentScenario = value;
+                        break;
+                    case "situationid":
+                        if (!string.IsNullOrWhiteSpace(value)) player.CurrentSituationId = value;
+                        break;
+                    case "titrelieu":
+                        if (!string.IsNullOrWhiteSpace(value)) player.CurrentDateTitle = value;
+                        break;
+                    case "jeutermine":
+                        if (bool.TryParse(value, out bool fin)) player.EstJeuTermine = fin;
                         break;
                     case "date":
                         if (DateTime.TryParse(value, out DateTime dt)) player.SaveDate = dt;

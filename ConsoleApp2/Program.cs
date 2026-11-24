@@ -31,29 +31,63 @@ if (SaveManager.SaveExists())
         Console.ForegroundColor = ConsoleColor.Yellow;
         Typewriter.WriteLine("[!] Une sauvegarde existante a été trouvée :");
         Console.ForegroundColor = ConsoleColor.White;
-        Typewriter.WriteLine($"    -> Joueur : {existingSave.Name}", delayMs: 10);
-        Typewriter.WriteLine($"    -> Âge    : {existingSave.Age} ans", delayMs: 10);
-        Typewriter.WriteLine($"    -> Sexe   : {existingSave.Gender}", delayMs: 10);
-        Typewriter.WriteLine($"    -> Amour  : {existingSave.Affection}% ({ScenarioManager.GetStatusAffection(existingSave.Affection)})", delayMs: 10);
-        Typewriter.WriteLine($"    -> Date   : {existingSave.SaveDate:dd/MM/yyyy HH:mm}\n", delayMs: 10);
+        Typewriter.WriteLine($"    -> Joueur     : {existingSave.Name}", delayMs: 10);
+        Typewriter.WriteLine($"    -> Âge        : {existingSave.Age} ans", delayMs: 10);
+        Typewriter.WriteLine($"    -> Sexe       : {existingSave.Gender}", delayMs: 10);
+        Typewriter.WriteLine($"    -> Amour      : {existingSave.Affection}% ({ScenarioManager.GetStatusAffection(existingSave.Affection)})", delayMs: 10);
+        string progressionTxt = existingSave.EstJeuTermine
+            ? "★ Aventure terminée !"
+            : $"{existingSave.CurrentDateTitle} (Scène {existingSave.CurrentSituationId})";
+        Typewriter.WriteLine($"    -> Progression: {progressionTxt}", delayMs: 10);
+        Typewriter.WriteLine($"    -> Date       : {existingSave.SaveDate:dd/MM/yyyy HH:mm}\n", delayMs: 10);
 
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Typewriter.Write(">> Voulez-vous charger cette sauvegarde ? (O/n) : ", delayMs: 10);
-        Console.ForegroundColor = ConsoleColor.White;
-        string? reponse = ReadCleanLine()?.ToLowerInvariant();
-
-        if (string.IsNullOrEmpty(reponse) || reponse is "o" or "oui" or "y" or "yes")
+        if (existingSave.EstJeuTermine)
         {
-            player = existingSave;
-            Console.ForegroundColor = ConsoleColor.Green;
-            Typewriter.WriteLine("\n[✓] Sauvegarde chargée avec succès !");
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Typewriter.WriteLine("[★] Vous avez déjà terminé toute l'aventure avec cette sauvegarde !");
+            Typewriter.Write(">> Voulez-vous recommencer l'aventure depuis le début ? (O/n) : ", delayMs: 10);
+            Console.ForegroundColor = ConsoleColor.White;
+            string? rep = ReadCleanLine()?.ToLowerInvariant();
+            if (string.IsNullOrEmpty(rep) || rep is "o" or "oui" or "y" or "yes")
+            {
+                player = existingSave;
+                player.CurrentScenario = "situation_parc.txt";
+                player.CurrentSituationId = "1";
+                player.CurrentDateTitle = "Le Date au Parc";
+                player.Affection = 20;
+                player.EstJeuTermine = false;
+                SaveManager.Save(player);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Typewriter.WriteLine("\n[✓] Aventure réinitialisée ! C'est reparti pour séduire Jules !");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Typewriter.WriteLine("\nCréation d'une nouvelle partie...\n", delayMs: 15);
+                Console.ResetColor();
+            }
         }
         else
         {
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Typewriter.WriteLine("\nCréation d'une nouvelle partie...\n", delayMs: 15);
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Typewriter.Write(">> Voulez-vous charger cette sauvegarde et reprendre votre partie ? (O/n) : ", delayMs: 10);
+            Console.ForegroundColor = ConsoleColor.White;
+            string? reponse = ReadCleanLine()?.ToLowerInvariant();
+
+            if (string.IsNullOrEmpty(reponse) || reponse is "o" or "oui" or "y" or "yes")
+            {
+                player = existingSave;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Typewriter.WriteLine("\n[✓] Sauvegarde chargée avec succès !");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Typewriter.WriteLine("\nCréation d'une nouvelle partie...\n", delayMs: 15);
+                Console.ResetColor();
+            }
         }
     }
 }
@@ -74,6 +108,7 @@ Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("\n========================================================");
 Console.ForegroundColor = ConsoleColor.Green;
 Typewriter.WriteLine($"[!] Bienvenue dans l'aventure, {player.Name} ({player.Age} ans, {player.Gender}) !");
+Typewriter.WriteLine($"Lieu actuel : {player.CurrentDateTitle} (Scène {player.CurrentSituationId})");
 Typewriter.WriteLine("Jules est déjà sous le charme...");
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("========================================================\n");
