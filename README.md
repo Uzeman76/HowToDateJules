@@ -1,4 +1,4 @@
-# ♥ How To Date Jules ♥
+# ♥ HowToDateJules ♥
 > *Le simulateur de séduction officiel en console !*
 
 Bienvenue dans **How To Date Jules**, un visual novel / jeu de drague textuel en console développé en C# (.NET). Vous y incarnez un personnage qui tente de conquérir le cœur de Jules à travers différents rendez-vous et situations interactives. Vos choix influenceront directement la jauge d'amour de Jules et détermineront l'issue de votre histoire d'amour !
