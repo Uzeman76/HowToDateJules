@@ -123,10 +123,19 @@ if (!Console.IsInputRedirected)
 // 4. Lecture et exécution du scénario depuis "situation.txt"
 ScenarioManager.JouerScenario(player);
 
-Console.ForegroundColor = ConsoleColor.Magenta;
-Typewriter.WriteLine("\nMerci d'avoir joué à 'How To Date Jules' !");
-Console.ResetColor();
-Typewriter.WriteLine("Appuyez sur une touche pour quitter...", delayMs: 15);
+if (!player.EstJeuTermine)
+{
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Typewriter.WriteLine("\nMerci d'avoir joué à 'How To Date Jules' !");
+    Console.ResetColor();
+    Typewriter.WriteLine("Appuyez sur une touche pour quitter...", delayMs: 15);
+}
+else
+{
+    Console.ForegroundColor = ConsoleColor.Blue;
+    Typewriter.WriteLine("\n[ Dossier d'arrestation clos ] Appuyez sur une touche pour fermer l'enquête...", delayMs: 15);
+    Console.ResetColor();
+}
 if (!Console.IsInputRedirected)
 {
     Console.ReadKey(intercept: true);
@@ -174,6 +183,7 @@ static Player CreerNouveauJoueur()
 
     // 2. Saisie de l'âge
     bool tentativeMineur = false;
+    bool tentativeSenior = false;
     while (true)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -208,7 +218,25 @@ static Player CreerNouveauJoueur()
                 break;
             }
 
-            if (age <= 120)
+            if (age > 65)
+            {
+                if (!tentativeSenior)
+                {
+                    tentativeSenior = true;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Typewriter.WriteLine("Désolé mais le beau Jules ne mange pas de pomme Granny\n", delayMs: 15);
+                    Console.ResetColor();
+                    continue;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Typewriter.WriteLine("Bon allé pourquoi pas se laisser une petite chance, on peut se trouver un point commun\n", delayMs: 15);
+                Console.ResetColor();
+                player.Age = age;
+                break;
+            }
+
+            if (age <= 65)
             {
                 player.Age = age;
                 break;

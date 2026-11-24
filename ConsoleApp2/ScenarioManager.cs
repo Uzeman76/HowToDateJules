@@ -560,8 +560,59 @@ public static class ScenarioManager
                 player.CurrentSituationId = currentId;
                 SaveManager.Save(player);
                 scenarioCourant = null;
+
+                // Affichage du grand générique de fin officiel de la Police Nationale !
+                AfficherGeneriquePolice(player);
             }
         }
+    }
+
+    public static void AfficherGeneriquePolice(Player player)
+    {
+        Console.WriteLine("\n");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("  [ 🚨 PIN-PON ");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("PIN-PON 🚨 ] ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("-- INTERVENTION POLICE NATIONALE TERMINÉE --\n");
+        Console.ResetColor();
+
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("╔══════════════════════════════════════════════════════════════════════════════╗");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("║            RÉPUBLIQUE FRANÇAISE - MINISTÈRE DE L'INTÉRIEUR                  ║");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("║                 DIRECTION GÉNÉRALE DE LA POLICE NATIONALE                   ║");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("║                   BRIGADE DE CONTRÔLE DES ENSEIGNANTS                        ║");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("╠══════════════════════════════════════════════════════════════════════════════╣");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("║                              RAPPORT D'ENQUÊTE                               ║");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"║  Agent sous couverture : Capitaine {player.Name,-47} ║");
+        Console.WriteLine($"║  Profil utilisé        : {player.Gender}, {player.Age} ans{"",-45} ║");
+        Console.WriteLine("║  Cible neutralisée     : Jules D. (alias \"Le Beau Jules\")                    ║");
+        Console.WriteLine("║  Chef d'inculpation    : Séduction illicite d'élève et charme aggravé        ║");
+        Console.WriteLine($"║  Taux d'Amour Infiltré : {player.Affection}% ({GetStatusAffection(player.Affection)}){"",-42} ║");
+        Console.WriteLine("║  Verdict               : Coupable ! Placé en garde à vue immédiate           ║");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("╠══════════════════════════════════════════════════════════════════════════════╣");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("║                             CRÉDITS DU JEU                                  ║");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("║  Une production originale : POLICE NATIONALE                                ║");
+        Console.WriteLine("║  Supervision des mœurs    : BRIGADE DE CONTRÔLE DES ENSEIGNANTS             ║");
+        Console.WriteLine("║  Véhicule d'intervention  : Fourgon sérigraphié aux gyrophares hurlants      ║");
+        Console.WriteLine("║  Accusé sous les verrous  : Le pauvre Jules en caleçon                      ║");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("╚══════════════════════════════════════════════════════════════════════════════╝");
+        Console.ResetColor();
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Typewriter.WriteLine("\n\"Le devoir avant les sentiments. Aucun professeur charmeur n'échappe à la loi.\"\n", delayMs: 15);
+        Console.ResetColor();
     }
 
     public static string RemplacerVariables(string template, Player player)
@@ -588,6 +639,12 @@ public static class ScenarioManager
         if (!File.Exists(ecolePath))
         {
             CreerFichierEcole(ecolePath);
+        }
+
+        string maisonPath = GetScenarioFilePath("situation_maison.txt");
+        if (!File.Exists(maisonPath))
+        {
+            CreerFichierMaison(maisonPath);
         }
     }
 
@@ -700,16 +757,90 @@ Choix:
 Titre: Distance et regrets
 Texte:
 L'ambiance est lourde et Jules garde ses distances toute la fin de la journée.
-Il quitte l'établissement en silence dès que la sonnerie retentit.
-Fin: FIN DE LA JOURNÉE - Jules est distant... Score d'amour final : {amour}%.
+Mais le soir venu, pris de remords, il t'envoie un SMS : ""{nom}, je n'arrive pas à t'oublier... Passe chez moi ce samedi soir, s'il te plaît.""
+Fin: FIN DE LA JOURNÉE - Jules te donne une seconde chance chez lui !
+Suivant: situation_maison.txt
 
 === SITUATION 6 ===
 Titre: La confession sous les cerisiers
 Texte:
 À la sortie des cours, Jules t'attend sous les cerisiers en fleurs devant la grille.
 Il prend tes deux mains dans les siennes :
-""{nom}, je ne veux plus passer une seule journée sans toi... Tu veux être avec moi ?""
-Fin: GRAND SUCCÈS AMOUREUX ♥ - Jules et toi êtes officiellement ensemble ! Score d'amour : {amour}% !
+""{nom}, je ne veux plus passer une seule journée sans toi... Viens chez moi ce samedi soir, juste tous les deux.""
+Fin: GRAND SUCCÈS AMOUREUX ♥ - Jules t'invite chez lui pour un date intime !
+Suivant: situation_maison.txt
+";
+        File.WriteAllText(path, contenu, System.Text.Encoding.UTF8);
+    }
+
+    public static void CreerFichierMaison(string path)
+    {
+        string contenu = @"TITRE_DATE: Soirée Intime chez Jules
+SUIVANT: 
+
+=== SITUATION 1 ===
+Titre: L'arrivée dans son appartement
+Texte:
+Le samedi soir, tu sonnes à la porte de l'appartement de Jules.
+Il t'ouvre en chemise blanche légèrement entrouverte, un doux parfum boisé flottant dans l'air.
+Des bougies sont allumées sur la table basse, une musique de jazz feutrée résonne en fond.
+""Entre {nom}... Tu es magnifique ce soir. J'ai préparé un petit dîner rien que pour nous deux.""
+Choix:
+1 | Le complimenter sur la décoration tamisée et enlever ton manteau -> 2 | +15
+2 | T'approcher tout près de lui avec un sourire enjôleur -> 2 | +20
+3 | ""Dis donc, tu sors le grand jeu... Tu fais ça avec tous tes élèves ?"" -> 2 | +5
+
+=== SITUATION 2 ===
+Titre: Le verre de vin sur le canapé
+Texte:
+Vous vous installez côte à côte sur le canapé en velours moelleux.
+Jules te sert un verre et s'assied tout contre toi. Vos genoux se frôlent.
+Il plonge son regard noisette dans le tien, la voix plus basse, envoûtante :
+""Tu sais {nom}... Je n'ai jamais ressenti une telle alchimie. Ta présence me fait perdre tous mes moyens...""
+Il pose doucement sa main tiède sur ta cuisse.
+Choix:
+1 | Poser ta main sur la sienne et te pencher vers ses lèvres -> 3 | +25
+2 | Lui caresser doucement la nuque en murmurant : ""Montre-moi..."" -> 3 | +20
+3 | Boire une gorgée en le fixant intensément dans les yeux -> 3 | +15
+
+=== SITUATION 3 ===
+Titre: La montée de tension intime
+Texte:
+Le souffle court, Jules a les joues brûlantes. Il glisse une mèche de cheveux derrière ton oreille.
+Vos visages ne sont plus qu'à quelques millimètres l'un de l'autre.
+Sa respiration chaude caresse ton cou. D'un geste lent et sensuel, il commence à déboutonner délicatement le haut de tes vêtements...
+""Je ne tiens plus {nom}... Dis-moi que tu me veux autant que je te veux...""
+Choix:
+1 | Fermer les yeux et le laisser t'embrasser passionnément -> 4 | +25
+2 | Glisser ta main sous sa chemise pour sentir son torse brûlant -> 4 | +25
+3 | Lui chuchoter au creux de l'oreille : ""Jules... J'ai un secret à t'avouer..."" -> 4 | +20
+
+=== SITUATION 4 ===
+Titre: L'Arrestation Inattendue !
+Texte:
+Alors que Jules ferme les yeux, prêt à sombrer dans l'extase amoureuse...
+D'un geste foudroyant et parfaitement entraîné, tu sors une paire de menottes en acier de ta poche intérieure et tu lui attaches fermement les deux poignets à la rambarde de son canapé !
+
+CLAC !
+
+Jules écarquille les yeux, stupéfait et terrifié :
+""M-Mais... {nom} ?! Qu'est-ce que tu fais ?! C'est une sorte de jeu coquin ?!""
+
+Tu sors calmement ta carte tricolore et ton insigne officiel :
+""CAPITAINE {nom}, DE LA BRIGADE DE CONTRÔLE DES ENSEIGNANTS !
+Vos mains où je puisse les voir ! Vous êtes en état d'arrestation pour séduction illicite d'élève et délit de beau gosse aggravé !""
+
+BOOOOOOM !
+La porte d'entrée vole en éclats sous le bélier des forces de l'ordre !
+Trois agents d'élite en tenue d'intervention cagoulés font irruption avec des lampes torches, sous le hurlement strident des sirènes :
+""POLICE NATIONALE ! TOUT LE MONDE AU SOL ! JULES, VOUS ÊTES CERNÉ !""
+
+Jules, en larmes et en caleçon sur son propre canapé, crie au scandale :
+""Mais attendez ! Je croyais qu'on s'aimait pour de vrai ! C'était toute une infiltration ?!""
+
+Tu lui réponds froidement en rangeant tes lunettes de soleil :
+""Désolé Jules... Mais le devoir de la République passe avant les rencards.""
+Fin: ARRESTATION RÉUSSIE - Jules a été transféré au commissariat central ! Score final de l'opération : {amour}%.
 ";
         File.WriteAllText(path, contenu, System.Text.Encoding.UTF8);
     }

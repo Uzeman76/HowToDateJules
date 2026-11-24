@@ -24,17 +24,26 @@ Bienvenue dans **How To Date Jules**, un visual novel / jeu de drague textuel en
 - **Passage rapide (*Skip*)** : Appuyez sur n'importe quelle touche (Espace, Entrée...) pour afficher immédiatement la suite du texte.
 - **Tampon sécurisé (`FlushInput`)** : Les touches pressées pour passer le texte ne polluent pas vos saisies de choix.
 
-### 👤 Personnalisation du Joueur & Easter Egg de l'Âge
+### 👤 Personnalisation du Joueur & Easter Eggs de l'Âge
 - Choix du **Nom**, de **l'Âge** et du **Sexe** (*Homme*, *Femme*, *Non-binaire*).
-- **Easter Egg Humoristique sur l'Âge** :
-  - *1ère saisie d'un âge < 18 ans* : `Je vais appeler les flics , le beau Jules ne fréquente pas les mineurs` (saisie refusée).
-  - *2ème saisie d'un âge < 18 ans* : `Oh après tout l'age n'est qu'un concept moderne établie par des gens trop peu ouvert d'esprit` (âge validé !).
+- **Easter Eggs Humoristiques sur l'Âge** :
+  - *Moins de 18 ans* :
+    - 1ère tentative : `Je vais appeler les flics , le beau Jules ne fréquente pas les mineurs` (refusé).
+    - 2ème tentative : `Oh après tout l'age n'est qu'un concept moderne établie par des gens trop peu ouvert d'esprit` (validé !).
+  - *Plus de 65 ans* :
+    - 1ère tentative : `Désolé mais le beau Jules ne mange pas de pomme Granny` (refusé).
+    - 2ème tentative : `Bon allé pourquoi pas se laisser une petite chance, on peut se trouver un point commun` (validé !).
 
 ### 🗺️ Multi-Dates & Enchaînement des Lieux
 - Le jeu gère une suite de plusieurs rendez-vous dans des fichiers distincts :
   1. **Le Date au Parc** (`situation_parc.txt`) : La rencontre fortuite, le café renversé, le stand de glaces.
   2. **Une Journée à l'École** (`situation_ecole.txt`) : Retrouvailles devant les casiers, TP de sciences en binôme, confession sous les cerisiers.
+  3. **Soirée Intime chez Jules** (`situation_maison.txt`) : L'ambiance feutrée, le verre sur le canapé, la tension intime... jusqu'au grand coup de filet de la **Brigade de Contrôle des Enseignants** !
 - Transition automatique et fluide d'un lieu au suivant dès la fin d'un rendez-vous.
+
+### 🚨 Le Grand Coup de Théâtre & Crédits Officiels
+- À l'apogée du date intime chez Jules, le joueur révèle sa véritable identité : **Capitaine sous couverture de la Brigade de Contrôle des Enseignants**.
+- Assaut des forces d'intervention, arrestation de Jules en caleçon et générique de fin aux couleurs de la **Police Nationale** !
 
 ### 📊 Tableau Récapitulatif de Fin de Date
 À la fin de chaque lieu, un bilan complet s'affiche :

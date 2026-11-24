@@ -1,5 +1,5 @@
 TITRE_DATE: Une Journée à l'École
-SUIVANT: 
+SUIVANT: situation_maison.txt
 
 === SITUATION 1 ===
 Titre: Retrouvailles dans le couloir
@@ -47,13 +47,15 @@ Choix:
 Titre: Distance et regrets
 Texte:
 L'ambiance est lourde et Jules garde ses distances toute la fin de la journée.
-Il quitte l'établissement en silence dès que la sonnerie retentit.
-Fin: FIN DE LA JOURNÉE - Jules est distant... Score d'amour final : {amour}%.
+Mais le soir venu, pris de remords, il t'envoie un SMS : "{nom}, je n'arrive pas à t'oublier... Passe chez moi ce samedi soir, s'il te plaît."
+Fin: FIN DE LA JOURNÉE - Jules te donne une seconde chance chez lui !
+Suivant: situation_maison.txt
 
 === SITUATION 6 ===
 Titre: La confession sous les cerisiers
 Texte:
 À la sortie des cours, Jules t'attend sous les cerisiers en fleurs devant la grille.
 Il prend tes deux mains dans les siennes :
-"{nom}, je ne veux plus passer une seule journée sans toi... Tu veux être avec moi ?"
-Fin: GRAND SUCCÈS AMOUREUX ♥ - Jules et toi êtes officiellement ensemble ! Score d'amour : {amour}% !
+"{nom}, je ne veux plus passer une seule journée sans toi... Viens chez moi ce samedi soir, juste tous les deux."
+Fin: GRAND SUCCÈS AMOUREUX ♥ - Jules t'invite chez lui pour un date intime !
+Suivant: situation_maison.txt
