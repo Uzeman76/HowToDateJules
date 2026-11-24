@@ -32,6 +32,7 @@ public static class SaveManager
             $"Nom: {player.Name}",
             $"Age: {player.Age}",
             $"Sexe: {player.Gender}",
+            $"Affection: {player.Affection}",
             $"Date: {player.SaveDate:yyyy-MM-dd HH:mm:ss}"
         ];
 
@@ -69,6 +70,9 @@ public static class SaveManager
                         break;
                     case "sexe":
                         player.Gender = value;
+                        break;
+                    case "affection":
+                        if (int.TryParse(value, out int aff)) player.Affection = Math.Clamp(aff, 0, 100);
                         break;
                     case "date":
                         if (DateTime.TryParse(value, out DateTime dt)) player.SaveDate = dt;

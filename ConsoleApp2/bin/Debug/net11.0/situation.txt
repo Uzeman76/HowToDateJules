@@ -6,9 +6,9 @@ Un grand jeune homme aux yeux rieurs et aux cheveux châtains rattrape ton gobel
 C'est Jules !
 "Ouf, sauvé(e) ! Tu t'appelles bien {nom}, non ? Je t'ai déjà croisé(e) à la fac..."
 Choix:
-1 | "Oui c'est bien moi ! Merci pour le réflexe, Jules." -> 2
-2 | "Un vrai ninja ! Tu sauves des cafés toute la journée ?" -> 3
-3 | "Attention où tu marches quand même..." -> 4
+1 | "Oui c'est bien moi ! Merci pour le réflexe, Jules." -> 2 | +15
+2 | "Un vrai ninja ! Tu sauves des cafés toute la journée ?" -> 3 | +10
+3 | "Attention où tu marches quand même..." -> 4 | -20
 
 === SITUATION 2 ===
 Titre: Le charme opère
@@ -16,8 +16,8 @@ Texte:
 Jules sourit de toutes ses dents, visiblement ravi d'engager la conversation avec toi.
 "Tout le plaisir est pour moi, {nom}. Dis, pour me faire pardonner la frayeur, tu accepterais de prendre un vrai café avec moi ?"
 Choix:
-1 | "J'accepte avec grand plaisir !" -> 5
-2 | "Seulement si c'est toi qui choisis la pâtisserie." -> 5
+1 | "J'accepte avec grand plaisir !" -> 5 | +20
+2 | "Seulement si c'est toi qui choisis la pâtisserie." -> 5 | +15
 
 === SITUATION 3 ===
 Titre: La touche d'humour
@@ -25,8 +25,8 @@ Texte:
 Jules éclate de rire et passe une main dans ses cheveux :
 "Seulement quand une personne aussi charmante passe devant moi ! Plus sérieusement, tu as un peu de temps pour papoter ?"
 Choix:
-1 | "Pour toi Jules, j'ai tout mon temps !" -> 5
-2 | "Juste quelques minutes alors..." -> 5
+1 | "Pour toi Jules, j'ai tout mon temps !" -> 5 | +25
+2 | "Juste quelques minutes alors..." -> 5 | +10
 
 === SITUATION 4 ===
 Titre: Trop distant(e)
@@ -34,13 +34,23 @@ Texte:
 Jules perd son sourire et baisse les yeux, visiblement refroidi par ta réponse.
 "Oh... Pardon, je ne voulais pas t'embêter. Bonne journée {nom}."
 Il tourne les talons et disparaît dans la foule.
-Fin: GAME OVER - Tu as été un peu trop froid(e)... Jules s'est enfui !
+Fin: GAME OVER - Tu as été trop froid(e)... Score d'amour final avec Jules : {amour}%.
 
 === SITUATION 5 ===
-Titre: Le rendez-vous parfait
+Titre: Le rendez-vous au café
 Texte:
 Vous vous installez à la terrasse ensoleillée d'un petit café cosy.
-La discussion est fluide, captivante et pleine de rires complices.
-À la fin du rendez-vous, Jules te regarde droit dans les yeux, rougit légèrement et glisse un papier plié dans ta main.
-"J'ai passé un moment incroyable, {nom}. Appelle-moi dès que tu rentres, d'accord ?"
-Fin: VICTOIRE D'AMOUR ♥ - Jules est officiellement sous ton charme !
+Jules te regarde avec attention et demande :
+"Alors {nom}, dis-moi ce qui te fait vibrer dans la vie ?"
+Choix:
+1 | Lui parler de tes passions avec des étoiles dans les yeux -> 6 | +20
+2 | Lui faire un compliment sincère sur son style -> 6 | +15
+3 | Regarder ton téléphone et répondre d'un air distrait -> 6 | -20
+
+=== SITUATION 6 ===
+Titre: Le dénouement romantique
+Texte:
+Le soleil commence à se coucher. Jules pose délicatement sa main près de la tienne.
+Ses joues prennent une jolie teinte rosée.
+"J'ai passé un moment absolument magique avec toi, {nom}..."
+Fin: BILAN AMOUREUX ♥ - Ton score d'amour avec Jules atteint {amour}% ! Jules est conquis !

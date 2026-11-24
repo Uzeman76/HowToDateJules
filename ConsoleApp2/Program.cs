@@ -17,7 +17,7 @@ Console.WriteLine(@"
 ");
 
 Console.ForegroundColor = ConsoleColor.Cyan;
-Console.WriteLine("                ♥ ~ Le simulateur de séduction officiel ~ ♥\n");
+Typewriter.WriteLine("                ♥ ~ Le simulateur de séduction officiel ~ ♥\n", delayMs: 20);
 Console.ResetColor();
 
 Player? player = null;
@@ -29,16 +29,16 @@ if (SaveManager.SaveExists())
     if (existingSave != null)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("[!] Une sauvegarde existante a été trouvée :");
+        Typewriter.WriteLine("[!] Une sauvegarde existante a été trouvée :");
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"    -> Joueur : {existingSave.Name}");
-        Console.WriteLine($"    -> Âge    : {existingSave.Age} ans");
-        Console.WriteLine($"    -> Sexe   : {existingSave.Gender}");
-        Console.WriteLine($"    -> Date   : {existingSave.SaveDate:dd/MM/yyyy HH:mm}");
-        Console.WriteLine();
+        Typewriter.WriteLine($"    -> Joueur : {existingSave.Name}", delayMs: 10);
+        Typewriter.WriteLine($"    -> Âge    : {existingSave.Age} ans", delayMs: 10);
+        Typewriter.WriteLine($"    -> Sexe   : {existingSave.Gender}", delayMs: 10);
+        Typewriter.WriteLine($"    -> Amour  : {existingSave.Affection}% ({ScenarioManager.GetStatusAffection(existingSave.Affection)})", delayMs: 10);
+        Typewriter.WriteLine($"    -> Date   : {existingSave.SaveDate:dd/MM/yyyy HH:mm}\n", delayMs: 10);
 
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write(">> Voulez-vous charger cette sauvegarde ? (O/n) : ");
+        Typewriter.Write(">> Voulez-vous charger cette sauvegarde ? (O/n) : ", delayMs: 10);
         Console.ForegroundColor = ConsoleColor.White;
         string? reponse = ReadCleanLine()?.ToLowerInvariant();
 
@@ -46,13 +46,13 @@ if (SaveManager.SaveExists())
         {
             player = existingSave;
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n[✓] Sauvegarde chargée avec succès !");
+            Typewriter.WriteLine("\n[✓] Sauvegarde chargée avec succès !");
             Console.ResetColor();
         }
         else
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine("\nCréation d'une nouvelle partie...\n");
+            Typewriter.WriteLine("\nCréation d'une nouvelle partie...\n", delayMs: 15);
             Console.ResetColor();
         }
     }
@@ -65,7 +65,7 @@ if (player == null)
     SaveManager.Save(player);
 
     Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine($"\n[✓] Profil sauvegardé avec succès dans '{Path.GetFileName(SaveManager.GetSavePath())}' !");
+    Typewriter.WriteLine($"\n[✓] Profil sauvegardé avec succès dans '{Path.GetFileName(SaveManager.GetSavePath())}' !");
     Console.ResetColor();
 }
 
@@ -73,13 +73,13 @@ if (player == null)
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("\n========================================================");
 Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine($"[!] Bienvenue dans l'aventure, {player.Name} ({player.Age} ans, {player.Gender}) !");
-Console.WriteLine("Jules est déjà sous le charme...");
+Typewriter.WriteLine($"[!] Bienvenue dans l'aventure, {player.Name} ({player.Age} ans, {player.Gender}) !");
+Typewriter.WriteLine("Jules est déjà sous le charme...");
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("========================================================\n");
 Console.ResetColor();
 
-Console.WriteLine("Appuyez sur n'importe quelle touche pour lancer le scénario...");
+Typewriter.WriteLine("Appuyez sur n'importe quelle touche pour lancer le scénario...", delayMs: 15);
 if (!Console.IsInputRedirected)
 {
     Console.ReadKey(intercept: true);
@@ -89,9 +89,9 @@ if (!Console.IsInputRedirected)
 ScenarioManager.JouerScenario(player);
 
 Console.ForegroundColor = ConsoleColor.Magenta;
-Console.WriteLine("\nMerci d'avoir joué à 'How To Date Jules' !");
+Typewriter.WriteLine("\nMerci d'avoir joué à 'How To Date Jules' !");
 Console.ResetColor();
-Console.WriteLine("Appuyez sur une touche pour quitter...");
+Typewriter.WriteLine("Appuyez sur une touche pour quitter...", delayMs: 15);
 if (!Console.IsInputRedirected)
 {
     Console.ReadKey(intercept: true);
@@ -99,6 +99,7 @@ if (!Console.IsInputRedirected)
 
 static string? ReadCleanLine()
 {
+    Typewriter.FlushInput();
     return Console.ReadLine()?.Trim('\uFEFF', ' ', '\t', '\r', '\n');
 }
 
@@ -107,14 +108,14 @@ static Player CreerNouveauJoueur()
     var player = new Player();
 
     Console.ForegroundColor = ConsoleColor.Cyan;
-    Console.WriteLine("=== CRÉATION DU JOUEUR ===");
+    Typewriter.WriteLine("=== CRÉATION DU JOUEUR ===");
     Console.ResetColor();
 
     // 1. Saisie du nom
     while (true)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write(">> Entrez votre nom de joueur : ");
+        Typewriter.Write(">> Entrez votre nom de joueur : ", delayMs: 15);
         Console.ForegroundColor = ConsoleColor.White;
 
         string? inputName = ReadCleanLine();
@@ -132,15 +133,16 @@ static Player CreerNouveauJoueur()
         }
 
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("[X] Le nom ne peut pas être vide. Veuillez réessayer.\n");
+        Typewriter.WriteLine("[X] Le nom ne peut pas être vide. Veuillez réessayer.\n", delayMs: 10);
         Console.ResetColor();
     }
 
     // 2. Saisie de l'âge
+    bool tentativeMineur = false;
     while (true)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write(">> Entrez votre âge : ");
+        Typewriter.Write(">> Entrez votre âge : ", delayMs: 15);
         Console.ForegroundColor = ConsoleColor.White;
 
         string? inputAge = ReadCleanLine();
@@ -151,28 +153,49 @@ static Player CreerNouveauJoueur()
             break;
         }
 
-        if (int.TryParse(inputAge, out int age) && age is >= 1 and <= 120)
+        if (int.TryParse(inputAge, out int age))
         {
-            player.Age = age;
-            break;
+            if (age < 18)
+            {
+                if (!tentativeMineur)
+                {
+                    tentativeMineur = true;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Typewriter.WriteLine("Je vais appeler les flics , le beau Jules ne fréquente pas les mineurs\n", delayMs: 15);
+                    Console.ResetColor();
+                    continue;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Typewriter.WriteLine("Oh après tout l'age n'est qu'un concept moderne établie par des gens trop peu ouvert d'esprit\n", delayMs: 15);
+                Console.ResetColor();
+                player.Age = age;
+                break;
+            }
+
+            if (age <= 120)
+            {
+                player.Age = age;
+                break;
+            }
         }
 
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("[X] Veuillez entrer un âge valide (ex: 20).\n");
+        Typewriter.WriteLine("[X] Veuillez entrer un âge valide (ex: 20).\n", delayMs: 10);
         Console.ResetColor();
     }
 
     // 3. Saisie du sexe (homme, femme, ou non-binaire)
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.WriteLine(">> Choisissez votre sexe :");
-    Console.WriteLine("   [1] Homme");
-    Console.WriteLine("   [2] Femme");
-    Console.WriteLine("   [3] Non-binaire");
+    Typewriter.WriteLine(">> Choisissez votre sexe :", delayMs: 15);
+    Typewriter.WriteLine("   [1] Homme", delayMs: 10);
+    Typewriter.WriteLine("   [2] Femme", delayMs: 10);
+    Typewriter.WriteLine("   [3] Non-binaire", delayMs: 10);
 
     while (true)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write(">> Votre choix (1, 2 ou 3) : ");
+        Typewriter.Write(">> Votre choix (1, 2 ou 3) : ", delayMs: 15);
         Console.ForegroundColor = ConsoleColor.White;
 
         string? inputGender = ReadCleanLine()?.ToLowerInvariant();
@@ -200,7 +223,7 @@ static Player CreerNouveauJoueur()
         }
 
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("[X] Choix invalide. Veuillez taper 1 (Homme), 2 (Femme) ou 3 (Non-binaire).\n");
+        Typewriter.WriteLine("[X] Choix invalide. Veuillez taper 1 (Homme), 2 (Femme) ou 3 (Non-binaire).\n", delayMs: 10);
         Console.ResetColor();
     }
 

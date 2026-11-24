@@ -5,6 +5,7 @@ public class Choice
     public int Number { get; set; }
     public string Text { get; set; } = string.Empty;
     public string TargetSituationId { get; set; } = string.Empty;
+    public int AffectionChange { get; set; } = 0; // Ex: +15, -10, 0
 }
 
 public class Situation
