@@ -32,3 +32,5 @@ C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\obj\Debug\net11.0\Conso
 C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\obj\Debug\net11.0\ref\ConsoleApp2.dll
 C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\obj\Debug\net11.0\ConsoleA.D5FB4C91.Up2Date
 C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Debug\net11.0\situation.txt
+C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Debug\net11.0\situation_ecole.txt
+C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Debug\net11.0\situation_parc.txt

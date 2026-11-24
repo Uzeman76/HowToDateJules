@@ -33,6 +33,7 @@ public static class SaveManager
             $"Age: {player.Age}",
             $"Sexe: {player.Gender}",
             $"Affection: {player.Affection}",
+            $"Scenario: {player.CurrentScenario}",
             $"Date: {player.SaveDate:yyyy-MM-dd HH:mm:ss}"
         ];
 
@@ -73,6 +74,9 @@ public static class SaveManager
                         break;
                     case "affection":
                         if (int.TryParse(value, out int aff)) player.Affection = Math.Clamp(aff, 0, 100);
+                        break;
+                    case "scenario":
+                        if (!string.IsNullOrWhiteSpace(value)) player.CurrentScenario = value;
                         break;
                     case "date":
                         if (DateTime.TryParse(value, out DateTime dt)) player.SaveDate = dt;

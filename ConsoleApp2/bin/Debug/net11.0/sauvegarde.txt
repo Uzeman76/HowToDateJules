@@ -1,6 +1,7 @@
 === SAUVEGARDE HOW TO DATE JULES ===
 Nom: juju
-Age: 15
-Sexe: Non-binaire
-Affection: 70
-Date: 2026-11-24 11:40:09
+Age: 18
+Sexe: Homme
+Affection: 100
+Scenario: 
+Date: 2026-11-24 12:13:13

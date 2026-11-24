@@ -1,0 +1,52 @@
+TITRE_DATE: Le Date au Parc
+SUIVANT: situation_ecole.txt
+
+=== SITUATION 1 ===
+Titre: Le café renversé
+Texte:
+Tu te balades tranquillement dans les allées fleuries du parc quand quelqu'un te bouscule doucement.
+Un grand jeune homme aux yeux rieurs rattrape ton gobelet in extremis !
+C'est Jules !
+"Ouf sauvé(e) ! Tu t'appelles bien {nom}, non ? Je t'ai déjà croisé(e)..."
+Choix:
+1 | "Oui c'est bien moi ! Merci pour le réflexe, Jules." -> 2 | +15
+2 | "Un vrai ninja ! Tu sauves des cafés toute la journée ?" -> 3 | +10
+3 | "Attention où tu marches quand même..." -> 4 | -20
+
+=== SITUATION 2 ===
+Titre: Le stand de glaces
+Texte:
+Jules sourit de toutes ses dents :
+"Tout le plaisir est pour moi, {nom} ! Dis, pour me faire pardonner, on va chercher une glace au stand du parc ?"
+Choix:
+1 | "Avec grand plaisir, je choisis le parfum !" -> 5 | +20
+2 | "Seulement si c'est toi qui régales." -> 5 | +10
+3 | "Non merci, je fais attention à ma ligne." -> 5 | -10
+
+=== SITUATION 3 ===
+Titre: La touche d'humour
+Texte:
+Jules éclate de rire et passe une main dans ses cheveux :
+"Seulement quand une personne aussi charmante passe devant moi ! Tu as un peu de temps pour te promener avec moi près du lac ?"
+Choix:
+1 | "Pour toi Jules, j'ai tout mon temps !" -> 5 | +25
+2 | "Juste quelques minutes alors..." -> 5 | +10
+3 | "Bof, marcher ça fatigue." -> 4 | -15
+
+=== SITUATION 4 ===
+Titre: Ambiance glaciale
+Texte:
+Jules perd son sourire et semble blessé par ta froideur.
+"Oh... Pardon de t'avoir dérangé(e) {nom}. Bonne journée alors..."
+Il tourne les talons et disparaît au loin.
+Fin: Jules est reparti déçu... Mais l'aventure ne s'arrête pas là !
+Suivant: situation_ecole.txt
+
+=== SITUATION 5 ===
+Titre: Fin d'après-midi au parc
+Texte:
+Vous marchez côte à côte en discutant de tout et de rien. La complicité est palpable.
+À la fin de la promenade, Jules te sourit timidement :
+"C'était super cette après-midi avec toi {nom}. On se retrouve demain à l'école ?"
+Fin: Fin d'un merveilleux rendez-vous au parc !
+Suivant: situation_ecole.txt

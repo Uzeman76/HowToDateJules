@@ -210,3 +210,5 @@ C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\obj\Release\net11.0\win
 C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\obj\Release\net11.0\win-x64\ConsoleApp2.pdb
 C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\obj\Release\net11.0\win-x64\ConsoleApp2.genruntimeconfig.cache
 C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\obj\Release\net11.0\win-x64\ref\ConsoleApp2.dll
+C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\situation_ecole.txt
+C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\situation_parc.txt

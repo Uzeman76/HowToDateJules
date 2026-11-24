@@ -1,0 +1,59 @@
+TITRE_DATE: Une Journée à l'École
+SUIVANT: 
+
+=== SITUATION 1 ===
+Titre: Retrouvailles dans le couloir
+Texte:
+Le lendemain matin, tu arrives devant ton casier à l'école.
+Jules t'attendait, appuyé contre le mur avec une briquette de jus pour toi !
+"Coucou {nom} ! J'espérais tellement te croiser avant le premier cours..."
+Choix:
+1 | Lui faire un grand sourire et accepter le jus avec tendresse -> 2 | +20
+2 | Rougir et le remercier timidement -> 2 | +10
+3 | "Encore toi ? Tu me suis partout ma parole !" -> 3 | -20
+
+=== SITUATION 2 ===
+Titre: Le binôme de TP
+Texte:
+Pendant le cours de sciences, le professeur demande de se mettre en binôme pour une expérience.
+Jules te fait un signe discret depuis l'autre bout de la salle en pointant la chaise à côté de lui.
+Choix:
+1 | Le rejoindre aussitôt avec enthousiasme -> 4 | +20
+2 | Hésiter pour le faire mariner un peu avant de le rejoindre -> 4 | +5
+3 | Choisir quelqu'un d'autre pour le rendre jaloux -> 5 | -25
+
+=== SITUATION 3 ===
+Titre: Malaise matinal
+Texte:
+Jules baisse les yeux, touché par ta remarque cassante.
+"Désolé, je pensais juste te faire plaisir..."
+Il range son jus et file en classe la tête basse.
+Choix:
+1 | Le rattraper par le bras pour t'excuser -> 4 | +10
+2 | Hausser les épaules et aller en cours sans un mot -> 5 | -20
+
+=== SITUATION 4 ===
+Titre: Pause déjeuner sur le toit
+Texte:
+À midi, Jules t'invite sur le toit de l'école, un endroit secret et paisible.
+Le vent souffle doucement dans ses cheveux.
+"Tu sais {nom}... Depuis qu'on s'est croisés au parc, tu es tout le temps dans mes pensées."
+Choix:
+1 | "Moi aussi Jules, tu as volé mon cœur..." -> 6 | +25
+2 | "Tu es vraiment un grand romantique Jules !" -> 6 | +15
+3 | "Désolé(e), j'étais concentré(e) sur mon sandwich." -> 5 | -20
+
+=== SITUATION 5 ===
+Titre: Distance et regrets
+Texte:
+L'ambiance est lourde et Jules garde ses distances toute la fin de la journée.
+Il quitte l'établissement en silence dès que la sonnerie retentit.
+Fin: FIN DE LA JOURNÉE - Jules est distant... Score d'amour final : {amour}%.
+
+=== SITUATION 6 ===
+Titre: La confession sous les cerisiers
+Texte:
+À la sortie des cours, Jules t'attend sous les cerisiers en fleurs devant la grille.
+Il prend tes deux mains dans les siennes :
+"{nom}, je ne veux plus passer une seule journée sans toi... Tu veux être avec moi ?"
+Fin: GRAND SUCCÈS AMOUREUX ♥ - Jules et toi êtes officiellement ensemble ! Score d'amour : {amour}% !

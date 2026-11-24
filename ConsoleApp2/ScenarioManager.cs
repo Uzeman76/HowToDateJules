@@ -2,42 +2,49 @@ namespace ConsoleApp2;
 
 public static class ScenarioManager
 {
-    public const string DefaultFileName = "situation.txt";
+    public const string DefaultFileName = "situation_parc.txt";
 
     /// <summary>
-    /// Trouve le chemin absolu du fichier de situation ("situation.txt" ou "situation").
+    /// Trouve le chemin absolu d'un fichier de situation donné (ou le premier par défaut).
     /// </summary>
-    public static string GetScenarioFilePath()
+    public static string GetScenarioFilePath(string? fileName = null)
     {
-        // 1. Répertoire de travail courant
-        if (File.Exists(DefaultFileName)) return Path.GetFullPath(DefaultFileName);
-        if (File.Exists("situation")) return Path.GetFullPath("situation");
+        string target = string.IsNullOrWhiteSpace(fileName) ? DefaultFileName : fileName;
 
-        // 2. Répertoire du sous-dossier ConsoleApp2 (si exécuté depuis la racine du repo)
-        string subfolderFile = Path.Combine("ConsoleApp2", DefaultFileName);
+        // 1. Répertoire courant
+        if (File.Exists(target)) return Path.GetFullPath(target);
+
+        // Si le nom par défaut "situation_parc.txt" n'existe pas, vérifier "situation.txt"
+        if (target == DefaultFileName && File.Exists("situation.txt"))
+        {
+            return Path.GetFullPath("situation.txt");
+        }
+
+        // 2. Sous-dossier ConsoleApp2
+        string subfolderFile = Path.Combine("ConsoleApp2", target);
         if (File.Exists(subfolderFile)) return Path.GetFullPath(subfolderFile);
 
-        // 3. Répertoire de base de l'application (bin/Debug/...)
-        string appDirFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultFileName);
+        // 3. Répertoire de l'exécutable (bin/Debug/...)
+        string appDirFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, target);
         if (File.Exists(appDirFile)) return appDirFile;
 
         // 4. Répertoire racine du projet source
-        string projectSourceFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", DefaultFileName);
+        string projectSourceFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", target);
         if (File.Exists(projectSourceFile)) return Path.GetFullPath(projectSourceFile);
 
-        return Path.GetFullPath(DefaultFileName);
+        return Path.GetFullPath(target);
     }
 
     /// <summary>
-    /// Lit le fichier "situation" et extrait l'ensemble des scènes, textes et choix avec modificateurs d'affection.
+    /// Lit et analyse un fichier de scénario/date.
     /// </summary>
-    public static Dictionary<string, Situation> LireFichierSituation(string cheminFichier)
+    public static ScenarioData LireFichierScenario(string cheminFichier)
     {
-        var situations = new Dictionary<string, Situation>(StringComparer.OrdinalIgnoreCase);
+        var data = new ScenarioData();
 
         if (!File.Exists(cheminFichier))
         {
-            return situations;
+            return data;
         }
 
         var lines = File.ReadAllLines(cheminFichier);
@@ -53,7 +60,7 @@ public static class ScenarioManager
                 textBuffer.Clear();
                 if (!string.IsNullOrWhiteSpace(currentSituation.Id))
                 {
-                    situations[currentSituation.Id] = currentSituation;
+                    data.Situations[currentSituation.Id] = currentSituation;
                 }
             }
         }
@@ -62,6 +69,21 @@ public static class ScenarioManager
         {
             var line = rawLine.Trim('\uFEFF', '\r');
             var trimmed = line.Trim();
+
+            // Méta-données globales du date en début de fichier
+            if (currentSituation == null)
+            {
+                if (trimmed.StartsWith("TITRE_DATE:", StringComparison.OrdinalIgnoreCase) || trimmed.StartsWith("DATE:", StringComparison.OrdinalIgnoreCase))
+                {
+                    data.DateTitle = trimmed[(trimmed.IndexOf(':') + 1)..].Trim();
+                    continue;
+                }
+                if (trimmed.StartsWith("SUIVANT:", StringComparison.OrdinalIgnoreCase))
+                {
+                    data.DefaultNextScenario = trimmed[(trimmed.IndexOf(':') + 1)..].Trim();
+                    continue;
+                }
+            }
 
             // Détection d'un en-tête : "=== SITUATION 1 ===" ou "[SITUATION: 1]"
             if (trimmed.StartsWith("===") || trimmed.StartsWith("[SITUATION", StringComparison.OrdinalIgnoreCase))
@@ -95,6 +117,12 @@ public static class ScenarioManager
                 continue;
             }
 
+            if (trimmed.StartsWith("Suivant:", StringComparison.OrdinalIgnoreCase))
+            {
+                currentSituation.NextScenarioFile = trimmed[8..].Trim();
+                continue;
+            }
+
             if (trimmed.StartsWith("Choix:", StringComparison.OrdinalIgnoreCase) || trimmed.Equals("Choix", StringComparison.OrdinalIgnoreCase))
             {
                 currentSection = "CHOICES";
@@ -118,7 +146,7 @@ public static class ScenarioManager
         }
 
         FinaliserSituationCourante();
-        return situations;
+        return data;
     }
 
     private static string ExtraireIdSituation(string header)
@@ -135,10 +163,6 @@ public static class ScenarioManager
 
     private static Choice? ParserLigneChoix(string line, int defaultNumber)
     {
-        // Formats acceptés :
-        // 1 | Texte du choix -> ID | +15
-        // 1 | Texte du choix -> ID [+15]
-        // 1 | Texte du choix -> ID
         string textPart = line;
         string targetPart = "";
         int affectionChange = 0;
@@ -150,7 +174,7 @@ public static class ScenarioManager
             targetPart = line[(arrowIndex + 2)..].Trim();
         }
 
-        // 1. Extraction d'un modificateur d'amour : format "| +15" ou "| -10"
+        // Format | +15 ou | -10
         int secondPipe = targetPart.IndexOf('|');
         if (secondPipe >= 0)
         {
@@ -162,7 +186,7 @@ public static class ScenarioManager
             targetPart = targetPart[..secondPipe].Trim();
         }
 
-        // 2. Extraction d'un modificateur d'amour : format "[+15]" ou "[-10]"
+        // Format [+15] ou [-10]
         int bracketStart = targetPart.IndexOf('[');
         int bracketEnd = targetPart.IndexOf(']');
         if (bracketStart >= 0 && bracketEnd > bracketStart)
@@ -196,6 +220,8 @@ public static class ScenarioManager
             }
         }
 
+        textPart = textPart.Trim('\"', ' ');
+
         return new Choice
         {
             Number = number,
@@ -205,9 +231,6 @@ public static class ScenarioManager
         };
     }
 
-    /// <summary>
-    /// Affiche graphiquement la jauge d'amour de Jules sous forme de cœurs et pourcentage.
-    /// </summary>
     public static void AfficherJaugeAmour(int affection)
     {
         int totalHearts = 10;
@@ -245,137 +268,274 @@ public static class ScenarioManager
     }
 
     /// <summary>
-    /// Exécute et affiche le scénario interactivement à l'écran avec jauge d'amour dynamique.
+    /// Affiche le récapitulatif détaillé d'un date avec les bons et mauvais choix.
     /// </summary>
-    public static void JouerScenario(Player player, string? cheminFichier = null)
+    public static void AfficherRecapitulatifDate(Player player, string dateTitle, List<ChoiceRecord> choixHistorique, int affectionDepart)
     {
-        string path = cheminFichier ?? GetScenarioFilePath();
+        int delta = player.Affection - affectionDepart;
+        int bonsChoix = choixHistorique.Count(c => c.EstBonChoix);
+        int mauvaisChoix = choixHistorique.Count(c => c.EstMauvaisChoix);
 
-        if (!File.Exists(path))
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("╔══════════════════════════════════════════════════════════════════════╗");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine($"║          ♥ RÉCAPITULATIF DU RENDEZ-VOUS : {dateTitle.ToUpper()} ♥");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("╚══════════════════════════════════════════════════════════════════════╝");
+        Console.ResetColor();
+
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Typewriter.WriteLine("\nVos choix durant ce rendez-vous :");
+        Console.ResetColor();
+
+        if (choixHistorique.Count == 0)
         {
-            CreerFichierSituationParDefaut(path);
+            Console.WriteLine("  (Aucun choix spécifique enregistré)");
+        }
+        else
+        {
+            foreach (var rec in choixHistorique)
+            {
+                if (rec.EstBonChoix)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("  [✓ BON CHOIX]     ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"\"{RemplacerVariables(rec.ChoiceText, player)}\" ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"(+{rec.AffectionChange}% ♥)");
+                }
+                else if (rec.EstMauvaisChoix)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("  [✗ MAUVAIS CHOIX] ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"\"{RemplacerVariables(rec.ChoiceText, player)}\" ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"({rec.AffectionChange}% 💔)");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write("  [~ NEUTRE]        ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"\"{RemplacerVariables(rec.ChoiceText, player)}\" (0%)");
+                }
+            }
         }
 
-        var situations = LireFichierSituation(path);
-        if (situations.Count == 0)
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("\n----------------------------------------------------------------------");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        string signe = delta >= 0 ? "+" : "";
+        Console.WriteLine($"  Bilan du rendez-vous : {signe}{delta}% d'amour ({bonsChoix} bon(s) choix, {mauvaisChoix} mauvais choix)");
+
+        AfficherJaugeAmour(player.Affection);
+
+        if (delta > 0)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Typewriter.WriteLine("  ♥ Jules repart le cœur battant, visiblement sous votre charme ! ♥\n", delayMs: 15);
+        }
+        else if (delta < 0)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Typewriter.WriteLine($"[Erreur] Aucune situation valide trouvée dans '{path}'.");
-            Console.ResetColor();
-            return;
+            Typewriter.WriteLine("  💔 Jules semble un peu perplexe ou blessé par certaines de vos réponses... 💔\n", delayMs: 15);
         }
-
-        string currentId = "1";
-        if (!situations.ContainsKey(currentId))
+        else
         {
-            currentId = situations.Keys.First();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Typewriter.WriteLine("  ~ Un date agréable, mais Jules attend encore d'être surpris ! ~\n", delayMs: 15);
         }
+        Console.ResetColor();
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("----------------------------------------------------------------------\n");
+        Console.ResetColor();
+    }
 
-        while (true)
+    /// <summary>
+    /// Exécute une série de rendez-vous / situations avec récapitulatif entre chaque lieu.
+    /// </summary>
+    public static void JouerScenario(Player player, string? cheminInitial = null)
+    {
+        VerifierFichiersScenariosParDefaut();
+
+        string? scenarioCourant = cheminInitial ?? player.CurrentScenario;
+
+        while (!string.IsNullOrWhiteSpace(scenarioCourant))
         {
-            if (!situations.TryGetValue(currentId, out var situation))
+            string path = GetScenarioFilePath(scenarioCourant);
+
+            if (!File.Exists(path))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Typewriter.WriteLine($"[Erreur] La situation '{currentId}' n'existe pas dans le scénario.");
+                Typewriter.WriteLine($"[Erreur] Impossible de trouver le scénario '{scenarioCourant}'.\n");
                 Console.ResetColor();
                 break;
             }
 
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("========================================================");
-            if (!string.IsNullOrWhiteSpace(situation.Title))
+            var scenarioData = LireFichierScenario(path);
+            if (scenarioData.Situations.Count == 0)
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Typewriter.WriteLine($"  ♥ {RemplacerVariables(situation.Title, player)} ♥", delayMs: 15);
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("--------------------------------------------------------");
-            }
-
-            // Affichage de la jauge d'amour de Jules
-            AfficherJaugeAmour(player.Affection);
-
-            // Affichage du texte du scénario avec effet rétro
-            Console.ForegroundColor = ConsoleColor.White;
-            string texteFormate = RemplacerVariables(situation.Text, player);
-            Typewriter.WriteLine(texteFormate);
-            Console.WriteLine();
-
-            // Si la situation est une fin
-            if (situation.IsEnding)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                if (!string.IsNullOrWhiteSpace(situation.EndingMessage))
-                {
-                    Typewriter.WriteLine($"[FIN] {RemplacerVariables(situation.EndingMessage, player)}\n");
-                }
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("========================================================");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Typewriter.WriteLine($"[Erreur] Aucune situation valide dans '{path}'.\n");
                 Console.ResetColor();
                 break;
             }
 
-            // Affichage des choix
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Typewriter.WriteLine("Que décides-tu de faire ?", delayMs: 15);
-            foreach (var choice in situation.Choices)
+            int affectionDepart = player.Affection;
+            var choixHistorique = new List<ChoiceRecord>();
+            string currentId = "1";
+            if (!scenarioData.Situations.ContainsKey(currentId))
             {
-                Typewriter.WriteLine($"   [{choice.Number}] {RemplacerVariables(choice.Text, player)}", delayMs: 15);
+                currentId = scenarioData.Situations.Keys.First();
             }
-            Console.WriteLine();
 
-            // Saisie du choix
+            string? prochainFichier = scenarioData.DefaultNextScenario;
+
+            // Boucle des scènes de ce date
             while (true)
             {
-                Typewriter.FlushInput();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Typewriter.Write(">> Ton choix : ", delayMs: 10);
+                if (!scenarioData.Situations.TryGetValue(currentId, out var situation))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Typewriter.WriteLine($"[Erreur] La situation '{currentId}' n'existe pas.\n");
+                    Console.ResetColor();
+                    break;
+                }
+
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("========================================================");
+                if (!string.IsNullOrWhiteSpace(situation.Title))
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Typewriter.WriteLine($"  ♥ {RemplacerVariables(situation.Title, player)} ♥", delayMs: 15);
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("--------------------------------------------------------");
+                }
+
+                AfficherJaugeAmour(player.Affection);
+
                 Console.ForegroundColor = ConsoleColor.White;
+                string texteFormate = RemplacerVariables(situation.Text, player);
+                Typewriter.WriteLine(texteFormate);
+                Console.WriteLine();
 
-                string? saisie = Console.ReadLine()?.Trim('\uFEFF', ' ', '\t', '\r', '\n');
-                if (saisie == null && Console.IsInputRedirected)
+                // Si la scène est une fin de date
+                if (situation.IsEnding)
                 {
-                    saisie = "1";
-                    Console.WriteLine(saisie);
-                }
-
-                if (int.TryParse(saisie, out int choixNum))
-                {
-                    var choixSelectionne = situation.Choices.FirstOrDefault(c => c.Number == choixNum);
-                    if (choixSelectionne != null)
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    if (!string.IsNullOrWhiteSpace(situation.EndingMessage))
                     {
-                        // Impact sur la jauge d'amour de Jules
-                        if (choixSelectionne.AffectionChange != 0)
-                        {
-                            player.Affection = Math.Clamp(player.Affection + choixSelectionne.AffectionChange, 0, 100);
-                            SaveManager.Save(player); // Sauvegarde automatique du nouveau score
-
-                            if (choixSelectionne.AffectionChange > 0)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Typewriter.WriteLine($"\n[♥ Jules a adoré cette réponse ! (+{choixSelectionne.AffectionChange}% d'amour)]\n", delayMs: 10);
-                            }
-                            else
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Typewriter.WriteLine($"\n[💔 Jules n'a pas trop aimé cette réponse... ({choixSelectionne.AffectionChange}% d'amour)]\n", delayMs: 10);
-                            }
-                            Console.ResetColor();
-
-                            if (!Console.IsInputRedirected)
-                            {
-                                Thread.Sleep(300);
-                            }
-                        }
-
-                        currentId = choixSelectionne.TargetSituationId;
-                        break;
+                        Typewriter.WriteLine($"[FIN DU LIEU] {RemplacerVariables(situation.EndingMessage, player)}\n");
                     }
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("========================================================");
+                    Console.ResetColor();
+
+                    if (!string.IsNullOrWhiteSpace(situation.NextScenarioFile))
+                    {
+                        prochainFichier = situation.NextScenarioFile;
+                    }
+                    break;
                 }
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Typewriter.WriteLine("[X] Choix invalide. Tape le numéro correspondant à ton choix.\n", delayMs: 10);
+                // Choix possibles
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Typewriter.WriteLine("Que décides-tu de faire ?", delayMs: 15);
+                foreach (var choice in situation.Choices)
+                {
+                    Typewriter.WriteLine($"   [{choice.Number}] {RemplacerVariables(choice.Text, player)}", delayMs: 15);
+                }
+                Console.WriteLine();
+
+                // Saisie
+                while (true)
+                {
+                    Typewriter.FlushInput();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Typewriter.Write(">> Ton choix : ", delayMs: 10);
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    string? saisie = Console.ReadLine()?.Trim('\uFEFF', ' ', '\t', '\r', '\n');
+                    if (saisie == null && Console.IsInputRedirected)
+                    {
+                        saisie = "1";
+                        Console.WriteLine(saisie);
+                    }
+
+                    if (int.TryParse(saisie, out int choixNum))
+                    {
+                        var choixSelectionne = situation.Choices.FirstOrDefault(c => c.Number == choixNum);
+                        if (choixSelectionne != null)
+                        {
+                            // Enregistrer le choix dans l'historique pour le récapitulatif
+                            choixHistorique.Add(new ChoiceRecord
+                            {
+                                SceneTitle = situation.Title,
+                                ChoiceText = choixSelectionne.Text,
+                                AffectionChange = choixSelectionne.AffectionChange
+                            });
+
+                            // Impact d'affection
+                            if (choixSelectionne.AffectionChange != 0)
+                            {
+                                player.Affection = Math.Clamp(player.Affection + choixSelectionne.AffectionChange, 0, 100);
+
+                                if (choixSelectionne.AffectionChange > 0)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Typewriter.WriteLine($"\n[♥ Jules a adoré cette réponse ! (+{choixSelectionne.AffectionChange}% d'amour)]\n", delayMs: 10);
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Typewriter.WriteLine($"\n[💔 Jules n'a pas trop aimé cette réponse... ({choixSelectionne.AffectionChange}% d'amour)]\n", delayMs: 10);
+                                }
+                                Console.ResetColor();
+
+                                if (!Console.IsInputRedirected)
+                                {
+                                    Thread.Sleep(300);
+                                }
+                            }
+
+                            currentId = choixSelectionne.TargetSituationId;
+                            break;
+                        }
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Typewriter.WriteLine("[X] Choix invalide. Tape le numéro correspondant à ton choix.\n", delayMs: 10);
+                    Console.ResetColor();
+                }
+            }
+
+            // AFFICHER LE RÉCAPITULATIF DU DATE
+            AfficherRecapitulatifDate(player, scenarioData.DateTitle, choixHistorique, affectionDepart);
+
+            // Mettre à jour et sauvegarder l'état du joueur
+            player.CurrentScenario = prochainFichier ?? string.Empty;
+            SaveManager.Save(player);
+
+            // Passage au date suivant ou fin
+            if (!string.IsNullOrWhiteSpace(prochainFichier))
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Typewriter.WriteLine("Appuyez sur n'importe quelle touche pour passer au prochain lieu...\n", delayMs: 15);
                 Console.ResetColor();
+                if (!Console.IsInputRedirected)
+                {
+                    Console.ReadKey(intercept: true);
+                }
+                scenarioCourant = prochainFichier;
+            }
+            else
+            {
+                // Plus d'autres dates dans la liste
+                scenarioCourant = null;
             }
         }
     }
@@ -392,64 +552,140 @@ public static class ScenarioManager
             .Replace("{affection}", player.Affection.ToString(), StringComparison.OrdinalIgnoreCase);
     }
 
-    public static void CreerFichierSituationParDefaut(string path)
+    public static void VerifierFichiersScenariosParDefaut()
     {
-        string contenu = @"=== SITUATION 1 ===
+        string parcPath = GetScenarioFilePath("situation_parc.txt");
+        if (!File.Exists(parcPath))
+        {
+            CreerFichierParc(parcPath);
+        }
+
+        string ecolePath = GetScenarioFilePath("situation_ecole.txt");
+        if (!File.Exists(ecolePath))
+        {
+            CreerFichierEcole(ecolePath);
+        }
+    }
+
+    public static void CreerFichierParc(string path)
+    {
+        string contenu = @"TITRE_DATE: Le Date au Parc
+SUIVANT: situation_ecole.txt
+
+=== SITUATION 1 ===
 Titre: Le café renversé
 Texte:
-Tu marches tranquillement dans le parc quand soudain, quelqu'un te bouscule doucement.
-Un grand jeune homme aux yeux rieurs et aux cheveux châtains rattrape ton gobelet in extremis !
+Tu te balades tranquillement dans les allées fleuries du parc quand quelqu'un te bouscule doucement.
+Un grand jeune homme aux yeux rieurs rattrape ton gobelet in extremis !
 C'est Jules !
-""Ouf, sauvé(e) ! Tu t'appelles bien {nom}, non ? Je t'ai déjà croisé(e) à la fac...""
+""Ouf sauvé(e) ! Tu t'appelles bien {nom}, non ? Je t'ai déjà croisé(e)...""
 Choix:
 1 | ""Oui c'est bien moi ! Merci pour le réflexe, Jules."" -> 2 | +15
 2 | ""Un vrai ninja ! Tu sauves des cafés toute la journée ?"" -> 3 | +10
 3 | ""Attention où tu marches quand même..."" -> 4 | -20
 
 === SITUATION 2 ===
-Titre: Le charme opère
+Titre: Le stand de glaces
 Texte:
-Jules sourit de toutes ses dents, visiblement ravi d'engager la conversation avec toi.
-""Tout le plaisir est pour moi, {nom}. Dis, pour me faire pardonner la frayeur, tu accepterais de prendre un vrai café avec moi ?""
+Jules sourit de toutes ses dents :
+""Tout le plaisir est pour moi, {nom} ! Dis, pour me faire pardonner, on va chercher une glace au stand du parc ?""
 Choix:
-1 | ""J'accepte avec grand plaisir !"" -> 5 | +20
-2 | ""Seulement si c'est toi qui choisis la pâtisserie."" -> 5 | +15
+1 | ""Avec grand plaisir, je choisis le parfum !"" -> 5 | +20
+2 | ""Seulement si c'est toi qui régales."" -> 5 | +10
+3 | ""Non merci, je fais attention à ma ligne."" -> 5 | -10
 
 === SITUATION 3 ===
 Titre: La touche d'humour
 Texte:
 Jules éclate de rire et passe une main dans ses cheveux :
-""Seulement quand une personne aussi charmante passe devant moi ! Plus sérieusement, tu as un peu de temps pour papoter ?""
+""Seulement quand une personne aussi charmante passe devant moi ! Tu as un peu de temps pour te promener avec moi près du lac ?""
 Choix:
 1 | ""Pour toi Jules, j'ai tout mon temps !"" -> 5 | +25
 2 | ""Juste quelques minutes alors..."" -> 5 | +10
+3 | ""Bof, marcher ça fatigue."" -> 4 | -15
 
 === SITUATION 4 ===
-Titre: Trop distant(e)
+Titre: Ambiance glaciale
 Texte:
-Jules perd son sourire et baisse les yeux, visiblement refroidi par ta réponse.
-""Oh... Pardon, je ne voulais pas t'embêter. Bonne journée {nom}.""
-Il tourne les talons et disparaît dans la foule.
-Fin: GAME OVER - Tu as été trop froid(e)... Affection finale avec Jules : {amour}%.
+Jules perd son sourire et semble blessé par ta froideur.
+""Oh... Pardon de t'avoir dérangé(e) {nom}. Bonne journée alors...""
+Il tourne les talons et disparaît au loin.
+Fin: Jules est reparti déçu... Mais l'aventure ne s'arrête pas là !
+Suivant: situation_ecole.txt
 
 === SITUATION 5 ===
-Titre: Le rendez-vous au café
+Titre: Fin d'après-midi au parc
 Texte:
-Vous vous installez à la terrasse ensoleillée d'un petit café cosy.
-Jules te regarde avec attention et demande :
-""Alors {nom}, dis-moi ce qui te fait vibrer dans la vie ?""
+Vous marchez côte à côte en discutant de tout et de rien. La complicité est palpable.
+À la fin de la promenade, Jules te sourit timidement :
+""C'était super cette après-midi avec toi {nom}. On se retrouve demain à l'école ?""
+Fin: Fin d'un merveilleux rendez-vous au parc !
+Suivant: situation_ecole.txt
+";
+        File.WriteAllText(path, contenu, System.Text.Encoding.UTF8);
+    }
+
+    public static void CreerFichierEcole(string path)
+    {
+        string contenu = @"TITRE_DATE: Une Journée à l'École
+SUIVANT: 
+
+=== SITUATION 1 ===
+Titre: Retrouvailles dans le couloir
+Texte:
+Le lendemain matin, tu arrives devant ton casier à l'école.
+Jules t'attendait, appuyé contre le mur avec une briquette de jus pour toi !
+""Coucou {nom} ! J'espérais tellement te croiser avant le premier cours...""
 Choix:
-1 | Lui parler de tes passions avec des étoiles dans les yeux -> 6 | +20
-2 | Lui faire un compliment sincère sur son style -> 6 | +15
-3 | Regarder ton téléphone et répondre d'un air distrait -> 6 | -20
+1 | Lui faire un grand sourire et accepter le jus avec tendresse -> 2 | +20
+2 | Rougir et le remercier timidement -> 2 | +10
+3 | ""Encore toi ? Tu me suis partout ma parole !"" -> 3 | -20
+
+=== SITUATION 2 ===
+Titre: Le binôme de TP
+Texte:
+Pendant le cours de sciences, le professeur demande de se mettre en binôme pour une expérience.
+Jules te fait un signe discret depuis l'autre bout de la salle en pointant la chaise à côté de lui.
+Choix:
+1 | Le rejoindre aussitôt avec enthousiasme -> 4 | +20
+2 | Hésiter pour le faire mariner un peu avant de le rejoindre -> 4 | +5
+3 | Choisir quelqu'un d'autre pour le rendre jaloux -> 5 | -25
+
+=== SITUATION 3 ===
+Titre: Malaise matinal
+Texte:
+Jules baisse les yeux, touché par ta remarque cassante.
+""Désolé, je pensais juste te faire plaisir...""
+Il range son jus et file en classe la tête basse.
+Choix:
+1 | Le rattraper par le bras pour t'excuser -> 4 | +10
+2 | Hausser les épaules et aller en cours sans un mot -> 5 | -20
+
+=== SITUATION 4 ===
+Titre: Pause déjeuner sur le toit
+Texte:
+À midi, Jules t'invite sur le toit de l'école, un endroit secret et paisible.
+Le vent souffle doucement dans ses cheveux.
+""Tu sais {nom}... Depuis qu'on s'est croisés au parc, tu es tout le temps dans mes pensées.""
+Choix:
+1 | ""Moi aussi Jules, tu as volé mon cœur..."" -> 6 | +25
+2 | ""Tu es vraiment un grand romantique Jules !"" -> 6 | +15
+3 | ""Désolé(e), j'étais concentré(e) sur mon sandwich."" -> 5 | -20
+
+=== SITUATION 5 ===
+Titre: Distance et regrets
+Texte:
+L'ambiance est lourde et Jules garde ses distances toute la fin de la journée.
+Il quitte l'établissement en silence dès que la sonnerie retentit.
+Fin: FIN DE LA JOURNÉE - Jules est distant... Score d'amour final : {amour}%.
 
 === SITUATION 6 ===
-Titre: Le dénouement romantique
+Titre: La confession sous les cerisiers
 Texte:
-Le soleil commence à se coucher. Jules pose délicatement sa main près de la tienne.
-Ses joues prennent une jolie teinte rosée.
-""J'ai passé un moment absolument magique avec toi, {nom}...""
-Fin: BILAN AMOUREUX ♥ - Ton score d'amour avec Jules atteint {amour}% ! Jules est conquis !
+À la sortie des cours, Jules t'attend sous les cerisiers en fleurs devant la grille.
+Il prend tes deux mains dans les siennes :
+""{nom}, je ne veux plus passer une seule journée sans toi... Tu veux être avec moi ?""
+Fin: GRAND SUCCÈS AMOUREUX ♥ - Jules et toi êtes officiellement ensemble ! Score d'amour : {amour}% !
 ";
         File.WriteAllText(path, contenu, System.Text.Encoding.UTF8);
     }
