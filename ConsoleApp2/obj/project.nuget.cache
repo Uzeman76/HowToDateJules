@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "ZXsTv8U5wO8=",
+  "dgSpecHash": "1JTdBJTDdHk=",
   "success": true,
   "projectFilePath": "C:\\Users\\justi\\Desktop\\Projet\\HowToDateJules\\ConsoleApp2\\ConsoleApp2.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\justi\\.nuget\\packages\\microsoft.net.illink.tasks\\11.0.0\\microsoft.net.illink.tasks.11.0.0.nupkg.sha512",
+    "C:\\Users\\justi\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\11.0.0\\microsoft.netcore.app.runtime.win-x64.11.0.0.nupkg.sha512",
+    "C:\\Users\\justi\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\11.0.0\\microsoft.windowsdesktop.app.runtime.win-x64.11.0.0.nupkg.sha512",
+    "C:\\Users\\justi\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\11.0.0\\microsoft.aspnetcore.app.runtime.win-x64.11.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

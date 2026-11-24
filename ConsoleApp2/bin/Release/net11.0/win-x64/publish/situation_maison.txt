@@ -1,0 +1,66 @@
+TITRE_DATE: Soirée Intime chez Jules
+SUIVANT: 
+
+=== SITUATION 1 ===
+Titre: L'arrivée dans son appartement
+Texte:
+Le samedi soir, tu sonnes à la porte de l'appartement de Jules.
+Il t'ouvre en chemise blanche légèrement entrouverte, un doux parfum boisé flottant dans l'air.
+Des bougies sont allumées sur la table basse, une musique de jazz feutrée résonne en fond.
+"Entre {nom}... Tu es magnifique ce soir. J'ai préparé un petit dîner rien que pour nous deux."
+Choix:
+1 | Le complimenter sur la décoration tamisée et enlever ton manteau -> 2 | +15
+2 | T'approcher tout près de lui avec un sourire enjôleur -> 2 | +20
+3 | "Dis donc, tu sors le grand jeu... Tu fais ça avec tous tes élèves ?" -> 2 | +5
+
+=== SITUATION 2 ===
+Titre: Le verre de vin sur le canapé
+Texte:
+Vous vous installez côte à côte sur le canapé en velours moelleux.
+Jules te sert un verre et s'assied tout contre toi. Vos genoux se frôlent.
+Il plonge son regard noisette dans le tien, la voix plus basse, envoûtante :
+"Tu sais {nom}... Je n'ai jamais ressenti une telle alchimie. Ta présence me fait perdre tous mes moyens..."
+Il pose doucement sa main tiède sur ta cuisse.
+Choix:
+1 | Poser ta main sur la sienne et te pencher vers ses lèvres -> 3 | +25
+2 | Lui caresser doucement la nuque en murmurant : "Montre-moi..." -> 3 | +20
+3 | Boire une gorgée en le fixant intensément dans les yeux -> 3 | +15
+
+=== SITUATION 3 ===
+Titre: La montée de tension intime
+Texte:
+Le souffle court, Jules a les joues brûlantes. Il glisse une mèche de cheveux derrière ton oreille.
+Vos visages ne sont plus qu'à quelques millimètres l'un de l'autre.
+Sa respiration chaude caresse ton cou. D'un geste lent et sensuel, il commence à déboutonner délicatement le haut de tes vêtements...
+"Je ne tiens plus {nom}... Dis-moi que tu me veux autant que je te veux..."
+Choix:
+1 | Fermer les yeux et le laisser t'embrasser passionnément -> 4 | +25
+2 | Glisser ta main sous sa chemise pour sentir son torse brûlant -> 4 | +25
+3 | Lui chuchoter au creux de l'oreille : "Jules... J'ai un secret à t'avouer..." -> 4 | +20
+
+=== SITUATION 4 ===
+Titre: L'Arrestation Inattendue !
+Texte:
+Alors que Jules ferme les yeux, prêt à sombrer dans l'extase amoureuse...
+D'un geste foudroyant et parfaitement entraîné, tu sors une paire de menottes en acier de ta poche intérieure et tu lui attaches fermement les deux poignets à la rambarde de son canapé !
+
+CLAC !
+
+Jules écarquille les yeux, stupéfait et terrifié :
+"M-Mais... {nom} ?! Qu'est-ce que tu fais ?! C'est une sorte de jeu coquin ?!"
+
+Tu sors calmement ta carte tricolore et ton insigne officiel :
+"CAPITAINE {nom}, DE LA BRIGADE DE CONTRÔLE DES ENSEIGNANTS !
+Vos mains où je puisse les voir ! Vous êtes en état d'arrestation pour séduction illicite d'élève et délit de beau gosse aggravé !"
+
+BOOOOOOM !
+La porte d'entrée vole en éclats sous le bélier des forces de l'ordre !
+Trois agents d'élite en tenue d'intervention cagoulés font irruption avec des lampes torches, sous le hurlement strident des sirènes :
+"POLICE NATIONALE ! TOUT LE MONDE AU SOL ! JULES, VOUS ÊTES CERNÉ !"
+
+Jules, en larmes et en caleçon sur son propre canapé, crie au scandale :
+"Mais attendez ! Je croyais qu'on s'aimait pour de vrai ! C'était toute une infiltration ?!"
+
+Tu lui réponds froidement en rangeant tes lunettes de soleil :
+"Désolé Jules... Mais le devoir de la République passe avant les rencards."
+Fin: ARRESTATION RÉUSSIE - Jules a été transféré au commissariat central ! Score final de l'opération : {amour}%.
