@@ -1,0 +1,92 @@
+# Visual Studio 2015/2017/2019/2022 user settings
+*.user
+*.suo
+*.userosscache
+*.[db]
+*.swp
+*.swx
+
+# IDE and editor temporary files
+.vs*/
+.idea/
+*.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Visual Studio generated files
+*_i.*
+*_tppch.
+*_cppch.
+*.tmp
+*.sln
+*.slnf
+*.slnm
+
+# Lock files (Visual Studio, .NET)
+*.userosscache
+*.user
+
+# Project and build directories
+bin/
+obj/
+*.log
+*.tmp
+
+# Database files (unless specified otherwise)
+*.pdb
+*.sdf
+*.accdb
+
+# Solution files
+*.sln
+*.csproj.nuget.dgs.json
+*.nuget
+*.nuget.props
+*.nuget.targets
+
+# NuGet packages
+packages/
+obj/
+*.userosscache
+
+# Restore and build scripts
+build.sh
+build.cmd
+Restore-PSModule.ps1
+*.deps.json
+Docker*
+docker-compose*.yml
+.DS_Store
+Thumbs.db
+Desktop.ini
+AppData/Roaming/Microsoft/Windows/Recent/
+Recycle.Bin
+*.tmp
+~$
+
+# Node modules (if using npm)
+node_modules/
+vendor/
+
+# OS and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+$.vs/*
+$*.suo
+$*.userosscache
+$*.sln*
+
+# .NET and MSBuild
+*.user
+*_i.*
+*.tmp
+*.pdb
+*.slnf
+*.slnm

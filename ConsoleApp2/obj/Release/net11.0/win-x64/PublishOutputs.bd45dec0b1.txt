@@ -1,6 +1,0 @@
-C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\publish\ConsoleApp2.pdb
-C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\publish\situation.txt
-C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\publish\situation_ecole.txt
-C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\publish\situation_maison.txt
-C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\publish\situation_parc.txt
-C:\Users\justi\Desktop\Projet\HowToDateJules\ConsoleApp2\bin\Release\net11.0\win-x64\publish\ConsoleApp2.exe

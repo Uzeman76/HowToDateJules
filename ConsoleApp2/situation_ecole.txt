@@ -9,7 +9,7 @@ Jules t'attendait, appuyé contre le mur avec une briquette de jus pour toi !
 "Coucou {nom} ! J'espérais tellement te croiser avant le premier cours..."
 Choix:
 1 | Lui faire un grand sourire et accepter le jus avec tendresse -> 2 | +20
-2 | Rougir et le remercier timidement -> 2 | +10
+2 | Rougir et le remercier timidement -> 2 | 0
 3 | "Encore toi ? Tu me suis partout ma parole !" -> 3 | -20
 
 === SITUATION 2 ===
@@ -19,7 +19,7 @@ Pendant le cours de sciences, le professeur demande de se mettre en binôme pour
 Jules te fait un signe discret depuis l'autre bout de la salle en pointant la chaise à côté de lui.
 Choix:
 1 | Le rejoindre aussitôt avec enthousiasme -> 4 | +20
-2 | Hésiter pour le faire mariner un peu avant de le rejoindre -> 4 | +5
+2 | Hésiter pour le faire mariner un peu avant de le rejoindre -> 4 | 0
 3 | Choisir quelqu'un d'autre pour le rendre jaloux -> 5 | -25
 
 === SITUATION 3 ===
@@ -31,6 +31,7 @@ Il range son jus et file en classe la tête basse.
 Choix:
 1 | Le rattraper par le bras pour t'excuser -> 4 | +10
 2 | Hausser les épaules et aller en cours sans un mot -> 5 | -20
+3 | Proposer poliment de passer à autre chose -> 4 | 0
 
 === SITUATION 4 ===
 Titre: Pause déjeuner sur le toit
@@ -40,7 +41,7 @@ Le vent souffle doucement dans ses cheveux.
 "Tu sais {nom}... Depuis qu'on s'est croisés au parc, tu es tout le temps dans mes pensées."
 Choix:
 1 | "Moi aussi Jules, tu as volé mon cœur..." -> 6 | +25
-2 | "Tu es vraiment un grand romantique Jules !" -> 6 | +15
+2 | "Tu es vraiment un grand romantique Jules !" -> 6 | 0
 3 | "Désolé(e), j'étais concentré(e) sur mon sandwich." -> 5 | -20
 
 === SITUATION 5 ===

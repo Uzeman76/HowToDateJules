@@ -109,15 +109,30 @@ Console.WriteLine("\n========================================================");
 Console.ForegroundColor = ConsoleColor.Green;
 Typewriter.WriteLine($"[!] Bienvenue dans l'aventure, {player.Name} ({player.Age} ans, {player.Gender}) !");
 Typewriter.WriteLine($"Lieu actuel : {player.CurrentDateTitle} (Scène {player.CurrentSituationId})");
-Typewriter.WriteLine("Jules est déjà sous le charme...");
 Console.ForegroundColor = ConsoleColor.Magenta;
 Console.WriteLine("========================================================\n");
+Console.ResetColor();
+
+if (!Console.IsOutputRedirected)
+{
+    Console.Clear();
+}
+
+Console.ForegroundColor = ConsoleColor.Cyan;
+Typewriter.WriteLine("Cette rentrée universitaire devait être banale, jusqu'à mon arrivée dans le cours de Jules.");
+Typewriter.WriteLine("Brillant enseignant au charisme fou, il captive la salle dès ses premiers mots, mais ce n'est pas son programme qui retient mon attention.");
+Typewriter.WriteLine("Impossible de détacher mon regard de ses beaux cheveux et de sa barbe bien soignée qui lui donnent une allure irrésistible.");
+Typewriter.WriteLine("Dès qu'il pose les yeux sur moi, mon cœur rate un battement : il ne me laisse clairement pas indifférent.\n");
 Console.ResetColor();
 
 Typewriter.WriteLine("Appuyez sur n'importe quelle touche pour lancer le scénario...", delayMs: 15);
 if (!Console.IsInputRedirected)
 {
     Console.ReadKey(intercept: true);
+}
+if (!Console.IsOutputRedirected)
+{
+    Console.Clear();
 }
 
 // 4. Lecture et exécution du scénario depuis "situation.txt"
@@ -248,17 +263,22 @@ static Player CreerNouveauJoueur()
         Console.ResetColor();
     }
 
-    // 3. Saisie du sexe (homme, femme, ou non-binaire)
+    // 3. Choix du genre
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Typewriter.WriteLine(">> Choisissez votre sexe :", delayMs: 15);
-    Typewriter.WriteLine("   [1] Homme", delayMs: 10);
-    Typewriter.WriteLine("   [2] Femme", delayMs: 10);
-    Typewriter.WriteLine("   [3] Non-binaire", delayMs: 10);
+    Typewriter.WriteLine(">> Choisissez votre genre :", delayMs: 15);
+    Typewriter.WriteLine($"   {"[1] Homme",-24} [9] Bigender", delayMs: 10);
+    Typewriter.WriteLine($"   {"[2] Femme",-24} [10] Demiboy", delayMs: 10);
+    Typewriter.WriteLine($"   {"[3] Non-binaire",-24} [11] Demigirl", delayMs: 10);
+    Typewriter.WriteLine($"   {"[4] Homme trans",-24} [12] Androgyne", delayMs: 10);
+    Typewriter.WriteLine($"   {"[5] Femme trans",-24} [13] Neutrois", delayMs: 10);
+    Typewriter.WriteLine($"   {"[6] Genderfluid",-24} [14] Two-Spirit", delayMs: 10);
+    Typewriter.WriteLine($"   {"[7] Genderqueer",-24} [15] Autre identité / préfère ne pas préciser", delayMs: 10);
+    Typewriter.WriteLine($"   {"[8] Agenre",-24}", delayMs: 10);
 
     while (true)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Typewriter.Write(">> Votre choix (1, 2 ou 3) : ", delayMs: 15);
+        Typewriter.Write(">> Votre choix (1 à 15) : ", delayMs: 15);
         Console.ForegroundColor = ConsoleColor.White;
 
         string? inputGender = ReadCleanLine()?.ToLowerInvariant();
@@ -279,14 +299,15 @@ static Player CreerNouveauJoueur()
             player.Gender = "Femme";
             break;
         }
-        if (inputGender is "3" or "non-binaire" or "non binaire" or "nb")
+        if (inputGender is "non-binaire" or "non binaire" or "nb"
+            || int.TryParse(inputGender, out int genderChoice) && genderChoice is >= 3 and <= 15)
         {
             player.Gender = "Non-binaire";
             break;
         }
 
         Console.ForegroundColor = ConsoleColor.Red;
-        Typewriter.WriteLine("[X] Choix invalide. Veuillez taper 1 (Homme), 2 (Femme) ou 3 (Non-binaire).\n", delayMs: 10);
+        Typewriter.WriteLine("[X] Choix invalide. Veuillez choisir un numéro entre 1 et 15.\n", delayMs: 10);
         Console.ResetColor();
     }
 

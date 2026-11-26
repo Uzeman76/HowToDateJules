@@ -516,11 +516,24 @@ public static class ScenarioManager
                                     Typewriter.WriteLine($"\n[💔 Jules n'a pas trop aimé cette réponse... ({choixSelectionne.AffectionChange}% d'amour)]\n", delayMs: 10);
                                 }
                                 Console.ResetColor();
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                Typewriter.WriteLine("\n[~] Ce choix n'affecte pas Jules. Il faudra mieux agir la prochaine fois.\n", delayMs: 10);
+                                Console.ResetColor();
+                            }
 
-                                if (!Console.IsInputRedirected)
-                                {
-                                    Thread.Sleep(300);
-                                }
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Typewriter.WriteLine("Appuyez sur une touche pour continuer...\n", delayMs: 15);
+                            Console.ResetColor();
+                            if (!Console.IsInputRedirected)
+                            {
+                                Console.ReadKey(intercept: true);
+                            }
+                            if (!Console.IsOutputRedirected)
+                            {
+                                Console.Clear();
                             }
 
                             currentId = choixSelectionne.TargetSituationId;
@@ -550,6 +563,10 @@ public static class ScenarioManager
                 if (!Console.IsInputRedirected)
                 {
                     Console.ReadKey(intercept: true);
+                }
+                if (!Console.IsOutputRedirected)
+                {
+                    Console.Clear();
                 }
                 scenarioCourant = prochainFichier;
             }

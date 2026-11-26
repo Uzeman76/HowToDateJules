@@ -10,8 +10,8 @@ Des bougies sont allumées sur la table basse, une musique de jazz feutrée rés
 "Entre {nom}... Tu es magnifique ce soir. J'ai préparé un petit dîner rien que pour nous deux."
 Choix:
 1 | Le complimenter sur la décoration tamisée et enlever ton manteau -> 2 | +15
-2 | T'approcher tout près de lui avec un sourire enjôleur -> 2 | +20
-3 | "Dis donc, tu sors le grand jeu... Tu fais ça avec tous tes élèves ?" -> 2 | +5
+2 | T'approcher tout près de lui avec un sourire enjôleur -> 2 | 0
+3 | "Dis donc, tu sors le grand jeu... Tu fais ça avec tous tes élèves ?" -> 2 | -10
 
 === SITUATION 2 ===
 Titre: Le verre de vin sur le canapé
@@ -23,8 +23,8 @@ Il plonge son regard noisette dans le tien, la voix plus basse, envoûtante :
 Il pose doucement sa main tiède sur ta cuisse.
 Choix:
 1 | Poser ta main sur la sienne et te pencher vers ses lèvres -> 3 | +25
-2 | Lui caresser doucement la nuque en murmurant : "Montre-moi..." -> 3 | +20
-3 | Boire une gorgée en le fixant intensément dans les yeux -> 3 | +15
+2 | Lui caresser doucement la nuque en murmurant : "Montre-moi..." -> 3 | 0
+3 | Boire une gorgée en le fixant intensément dans les yeux -> 3 | -10
 
 === SITUATION 3 ===
 Titre: La montée de tension intime
@@ -35,8 +35,8 @@ Sa respiration chaude caresse ton cou. D'un geste lent et sensuel, il commence �
 "Je ne tiens plus {nom}... Dis-moi que tu me veux autant que je te veux..."
 Choix:
 1 | Fermer les yeux et le laisser t'embrasser passionnément -> 4 | +25
-2 | Glisser ta main sous sa chemise pour sentir son torse brûlant -> 4 | +25
-3 | Lui chuchoter au creux de l'oreille : "Jules... J'ai un secret à t'avouer..." -> 4 | +20
+2 | Glisser ta main sous sa chemise pour sentir son torse brûlant -> 4 | 0
+3 | Lui chuchoter au creux de l'oreille : "Jules... J'ai un secret à t'avouer..." -> 4 | -10
 
 === SITUATION 4 ===
 Titre: L'Arrestation Inattendue !

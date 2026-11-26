@@ -10,7 +10,7 @@ C'est Jules !
 "Ouf sauvé(e) ! Tu t'appelles bien {nom}, non ? Je t'ai déjà croisé(e)..."
 Choix:
 1 | "Oui c'est bien moi ! Merci pour le réflexe, Jules." -> 2 | +15
-2 | "Un vrai ninja ! Tu sauves des cafés toute la journée ?" -> 3 | +10
+2 | "Un vrai ninja ! Tu sauves des cafés toute la journée ?" -> 3 | 0
 3 | "Attention où tu marches quand même..." -> 4 | -20
 
 === SITUATION 2 ===
@@ -20,7 +20,7 @@ Jules sourit de toutes ses dents :
 "Tout le plaisir est pour moi, {nom} ! Dis, pour me faire pardonner, on va chercher une glace au stand du parc ?"
 Choix:
 1 | "Avec grand plaisir, je choisis le parfum !" -> 5 | +20
-2 | "Seulement si c'est toi qui régales." -> 5 | +10
+2 | "Seulement si c'est toi qui régales." -> 5 | 0
 3 | "Non merci, je fais attention à ma ligne." -> 5 | -10
 
 === SITUATION 3 ===
@@ -30,7 +30,7 @@ Jules éclate de rire et passe une main dans ses cheveux :
 "Seulement quand une personne aussi charmante passe devant moi ! Tu as un peu de temps pour te promener avec moi près du lac ?"
 Choix:
 1 | "Pour toi Jules, j'ai tout mon temps !" -> 5 | +25
-2 | "Juste quelques minutes alors..." -> 5 | +10
+2 | "Juste quelques minutes alors..." -> 5 | 0
 3 | "Bof, marcher ça fatigue." -> 4 | -15
 
 === SITUATION 4 ===
