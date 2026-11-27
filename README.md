@@ -69,3 +69,7 @@ Jauge d'Amour : [ ♥♥♥♥♥♥♡♡♡♡ ] 55% (😊 Complice)
 | **40% à 59%** | 😊 *Complice* | La conversation coule de source, les sourires s'installent. |
 | **60% à 79%** | 💖 *Coup de cœur* | Jules commence sérieusement à craquer pour vous. |
 | **80% à 100%** | 💘 *Fou amoureux !* | Jules est prêt à vous déclarer sa flamme éternelle ! |
+
+---
+
+*Développé avec amour pour séduire Jules ♥*
