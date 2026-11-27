@@ -406,7 +406,9 @@ public static class ScenarioManager
 
             string? prochainFichier = scenarioData.DefaultNextScenario;
 
-            // Boucle des scènes de ce date
+            // Boucle des scènes de ce date - affection accumulée dans une variable locale
+            int affectionAccumulee = 0;
+
             while (true)
             {
                 if (!scenarioData.Situations.TryGetValue(currentId, out var situation))
@@ -537,6 +539,9 @@ public static class ScenarioManager
                             }
 
                             currentId = choixSelectionne.TargetSituationId;
+                            
+                            // Accumuler les points d'affection dans la variable locale
+                            affectionAccumulee += Math.Abs(choixSelectionne.AffectionChange);
                             break;
                         }
                     }
@@ -544,6 +549,41 @@ public static class ScenarioManager
                     Console.ForegroundColor = ConsoleColor.Red;
                     Typewriter.WriteLine("[X] Choix invalide. Tape le numéro correspondant à ton choix.\n", delayMs: 10);
                     Console.ResetColor();
+                }
+
+                // Vérification conditionnelle après la Situation 2 (ID=5)
+                if (currentId == "5")
+                {
+                    int affectionAprisSituation2 = Math.Min(player.Affection, 79); // Garder sous 80 pour ne pas afficher "Fou amoureux"
+                    
+                    // Si affection < 70%, passer à la situation examen, sinon maison
+                    if (affectionAprisSituation2 < 70)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Typewriter.WriteLine($"\n[!] Jules réalise que ton niveau d'affection est bas : {affectionAprisSituation2}%\n", delayMs: 10);
+                        Console.ResetColor();
+                        
+                        // Passage à la situation examen
+                        player.CurrentScenario = "situation_exam.txt";
+                        player.CurrentSituationId = "6";
+                        player.CurrentDateTitle = "L'Examen Final";
+                        player.Affection = Math.Clamp(player.Affection + 50, 70, 80); // Augmenter à 70-80%
+                        
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Typewriter.WriteLine("   ♥  Jules décide de t'aider pendant les examins ! \n", delayMs: 10);
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        // Sinon, on passe directement à la situation maison
+                        player.CurrentScenario = "situation_maison.txt";
+                        player.CurrentSituationId = "1";
+                        player.CurrentDateTitle = "La Maison";
+                        
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Typewriter.WriteLine($"[!] Félicitations {player.Name}, ta relation est au bon niveau ({affectionAprisSituation2}%) ! \n", delayMs: 10);
+                        Console.ResetColor();
+                    }
                 }
             }
 

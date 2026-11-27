@@ -9,9 +9,10 @@ Un grand jeune homme aux yeux rieurs rattrape ton gobelet in extremis !
 C'est Jules !
 "Ouf sauvé(e) ! Tu t'appelles bien {nom}, non ? Je t'ai déjà croisé(e)..."
 Choix:
-1 | "Oui c'est bien moi ! Merci pour le réflexe, Jules." -> 2 | +15
-2 | "Un vrai ninja ! Tu sauves des cafés toute la journée ?" -> 3 | 0
-3 | "Attention où tu marches quand même..." -> 4 | -20
+1 | "Oui c'est bien moi ! Merci pour le réflexe, Jules." -> 2 | +5
+2 | "Un vrai ninja ! Tu sauves des cafés toute la journée ?" -> 3 | +5
+3 | "Attention où tu marches quand même..." -> 4 | -5
+4 | "C'est super de ton côté !" -> 5 | 0
 
 === SITUATION 2 ===
 Titre: Le stand de glaces
@@ -19,9 +20,56 @@ Texte:
 Jules sourit de toutes ses dents :
 "Tout le plaisir est pour moi, {nom} ! Dis, pour me faire pardonner, on va chercher une glace au stand du parc ?"
 Choix:
-1 | "Avec grand plaisir, je choisis le parfum !" -> 5 | +20
-2 | "Seulement si c'est toi qui régales." -> 5 | 0
-3 | "Non merci, je fais attention à ma ligne." -> 5 | -10
+1 | "Avec grand plaisir, je choisis le parfum !" -> 5 | +10
+2 | "Seulement si c'est toi qui régales." -> 5 | +5
+3 | "Non merci, je fais attention à ma ligne." -> 5 | -5
+4 | "Tu veux un dessert après ?" -> 5 | 0
+
+=== SITUATION EXAMEN ===
+Titre: Les examens de fin de semestre
+Texte:
+Jules entre dans la classe et pose son stylo sur le bureau. Il prend une grande respiration, mais te regarde en souriant :
+"Je sais que tu as des examens cette semaine. Ne t'inquiète pas, je m'occupe de toi ! Tu auras tout ce qu'il faut pour réussir."
+Il te remet quelques notes et des conseils personnalisés.
+Choix:
+1 | "Wow merci Jules ! Je vais les utiliser !" -> 7 | +10
+2 | "Merci mais je dois faire par moi-même." -> 8 | +5
+3 | "Tu penses que ça va aller ?" -> 9 | 0
+4 | "D'accord, je fais avec mes connaissances." -> 10 | -5
+
+=== SITUATION 7 ===
+Titre: L'examen réussi
+Texte:
+Tu passes l'examen avec un excellent résultat grâce aux conseils de Jules. Il sourit à chaque fois que tu lui en parles.
+Jules a retrouvé confiance en toi, et votre complicité grandit jour après jour !
+Fin: Vous passez tous les deux l'examen en tête à tête !
+Suivant: situation_maison.txt
+
+=== SITUATION 8 ===
+Titre: L'examen solo
+Texte:
+Tu passes ton examen sans aide extérieure. Jules reste observateur et souriant, fasciné par ta persévérance.
+Il te dit : "Bravo ! C'est impressionnant de faire preuve d'autonomie."
+Fin: Tu as réussi l'examen de manière autonome !
+Suivant: situation_maison.txt
+
+=== SITUATION 9 ===
+Titre: Le scepticisme de Jules
+Texte:
+Jules reste un peu frustré mais te regarde avec détermination. Il finit par accepter ta décision et te dit :
+"Bon d'accord... Mais tu sais que t'as toujours mon dos si tu as besoin d'aide !"
+Fin: Tu as réussi l'examen toute seule, Jules reste étonné !
+Suivant: situation_maison.txt
+
+=== SITUATION 10 ===
+Titre: Les excuses de Jules
+Texte:
+Jules regarde ses notes remises à sa place et te fixe : "Dis donc... T'as un peu changé. Tu n'es pas la première personne qui dit non ! Mais tu sais que j'attendrai toujours."
+Choix:
+1 | "C'est pas grave, je me suis concentrée/é ! Merci quand même !" -> 7 | +10
+2 | "Oui mais c'était compliqué de faire sans toi." -> 8 | +5
+3 | "Je préfère mon travail ! Tu sais que j'aime l'autonomie." -> 9 | 0
+4 | "Ben... D'accord Jules, je comprends ton dégoût !" -> 11 | -5
 
 === SITUATION 3 ===
 Titre: La touche d'humour
@@ -29,9 +77,10 @@ Texte:
 Jules éclate de rire et passe une main dans ses cheveux :
 "Seulement quand une personne aussi charmante passe devant moi ! Tu as un peu de temps pour te promener avec moi près du lac ?"
 Choix:
-1 | "Pour toi Jules, j'ai tout mon temps !" -> 5 | +25
-2 | "Juste quelques minutes alors..." -> 5 | 0
-3 | "Bof, marcher ça fatigue." -> 4 | -15
+1 | "Pour toi Jules, j'ai tout mon temps !" -> 5 | +5
+2 | "Juste quelques minutes alors..." -> 5 | +5
+3 | "Bof, marcher ça fatigue." -> 4 | -5
+4 | "Alors si tu promets de bien faire ! :)" -> 6 | 0
 
 === SITUATION 4 ===
 Titre: Ambiance glaciale

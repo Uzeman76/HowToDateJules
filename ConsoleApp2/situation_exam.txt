@@ -1,0 +1,37 @@
+TITRE_DATE: L'Examen Final - Séquence d'examen après le parc
+SUIVANT: situation_maison.txt
+
+=== SITUATION 6 ===
+Titre: Les examens de fin de semestre
+Texte:
+Jules entre dans la classe et pose son stylo sur le bureau. Il prend une grande respiration, mais te regarde en souriant :
+"Je sais que tu as des examens cette semaine. Ne t'inquiète pas, je m'occupe de toi ! Tu auras tout ce qu'il faut pour réussir."
+Il te remet quelques notes et des conseils personnalisés.
+Choix:
+1 | "Wow merci Jules ! Je vais les utiliser !" -> 7 | +30
+2 | "Merci mais je dois faire par moi-même." -> 8 | 0
+3 | "T'as confiance en toi pour de bon ?" -> 9 | -10
+
+=== SITUATION 7 ===
+Titre: L'examen réussi
+Texte:
+Tu passes l'examen avec un excellent résultat grâce aux conseils de Jules. Il sourit à chaque fois que tu lui en parles.
+Jules a retrouvé confiance en toi, et votre complicité grandit jour après jour !
+Fin: Vous passez tous les deux l'examen en tête à tête !
+Suivant: situation_maison.txt
+
+=== SITUATION 8 ===
+Titre: L'examen solo
+Texte:
+Tu passes ton examen sans aide extérieure. Jules reste observateur et souriant, fasciné par ta persévérance.
+Il te dit : "Bravo ! C'est impressionnant de faire preuve d'autonomie."
+Fin: Tu as réussi l'examen de manière autonome !
+Suivant: situation_maison.txt
+
+=== SITUATION 9 ===
+Titre: Le scepticisme de Jules
+Texte:
+Jules reste un peu frustré mais te regarde avec détermination. Il finit par accepter ta décision et te dit :
+"Bon d'accord... Mais tu sais que t'as toujours mon dos si tu as besoin d'aide !"
+Fin: Tu as réussi l'examen toute seule, Jules reste étonné !
+Suivant: situation_maison.txt
